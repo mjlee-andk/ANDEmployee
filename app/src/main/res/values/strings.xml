@@ -12,7 +12,7 @@
     <string name="notice_fragment">Hello notice fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="anonymous_fragment">Hello anonymous fragment</string>
-    <string name="title_activity_employees">EmployeesActivity</string>
+    <string name="title_activity_employees">직원목록</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
@@ -26,7 +26,9 @@
     <string name="prompt_password_confirm" translatable="false">Password Confirm</string>
     <string name="prompt_email" translatable="false">Email</string>
 
-    <string name="action_sign_in" translatable="false">Sign in or register</string>
-    <string name="action_sign_in_short" translatable="false">Sign in</string>
-    <string name="action_change_password" translatable="false">Change Password</string>
+    <string name="action_sign_in" translatable="false">로그인</string>
+    <string name="action_sign_in_short" translatable="false">로그인</string>
+    <string name="action_change_password" translatable="false">비밀번호 변경</string>
+
+    <string name="basic_profile_url">https://kin-phinf.pstatic.net/20150101_166/1420120327193oRCl2_JPEG/1407920943510.jpg?type=w750</string>
 </resources>

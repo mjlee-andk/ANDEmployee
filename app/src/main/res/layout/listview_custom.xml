@@ -26,28 +26,23 @@
                 android:id="@+id/tv_employees_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
                 android:text="이름"/>
 
-            <LinearLayout
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/tv_employees_department"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="부서" />
 
-                <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/tv_employees_department"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="부서" />
-
-                <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/tv_employees_position"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="직급" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/tv_employees_position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="직급" />
 
         </LinearLayout>
 

@@ -15,7 +15,9 @@
             android:id="@+id/tv_adk_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="30sp"
             android:text="ADK" />
 
         <LinearLayout
@@ -29,100 +31,150 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btn_department_director"
+                    android:id="@+id/btn_department_ceo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이사"/>
+                    android:layout_weight="1"
+                    android:text="대표이사"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/btn_department_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="임원진"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
 
                 <Button
                     android:id="@+id/btn_department_management"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="관리부"/>
+                    android:layout_weight="1"
+                    android:text="관리부"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_business_support"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="경영지원실"/>
+                    android:layout_weight="1"
+                    android:text="경영지원실"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_business_pi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="PI사업부"/>
+                    android:layout_weight="1"
+                    android:text="PI사업부"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
 
                 <Button
                     android:id="@+id/btn_department_business_weight_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="계량기 사업 1부"/>
+                    android:layout_weight="1"
+                    android:text="계량기 사업 1부"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_business_weight_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="계량기 사업 2부"/>
+                    android:layout_weight="1"
+                    android:text="계량기 사업 2부"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_business_instrument"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="계측기 사업부"/>
+                    android:layout_weight="1"
+                    android:text="계측기 사업부"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
 
                 <Button
                     android:id="@+id/btn_department_rnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="부설연구소"/>
+                    android:layout_weight="1"
+                    android:text="부설연구소"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_cs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="CS 사업부"/>
+                    android:layout_weight="1"
+                    android:text="CS 사업부"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
                 <Button
                     android:id="@+id/btn_department_calibration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="교정센터"/>
+                    android:layout_weight="1"
+                    android:text="교정센터"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorPrimary"/>
 
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-
-    <!-- TODO: Update blank fragment layout -->
 
 </FrameLayout>

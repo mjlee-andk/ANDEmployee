@@ -66,15 +66,19 @@ class EmployeeDetailActivity : AppCompatActivity() {
 
                     if(mCode == 200) {
                         mEmployeeName.text = mData?.name
-                        mEmployeeDepartment.text = mData?.department_id
-                        mEmployeePosition.text = mData?.position_id
+                        // TODO 수정할 것
+                        mEmployeeDepartment.text = "계량기 사업 1부"
+                        mEmployeePosition.text = "사원"
+//                        mEmployeeDepartment.text = mData?.department_id
+//                        mEmployeePosition.text = mData?.position_id
                         mEmployeeExtensionNum.text = mData?.extension_number
                         mEmployeePhoneNum.text = mData?.phone
                         mEmployeeBirthdate.text = mData?.birth
                         mEmployeeJoindate.text = mData?.join_date
 
                         if(mData?.profile_img == null) {
-                            Glide.with(this@EmployeeDetailActivity).load("http://goo.gl/gEgYUd").into(mEmployeeProfile)
+
+                            Glide.with(this@EmployeeDetailActivity).load(getString(R.string.basic_profile_url)).into(mEmployeeProfile)
                         }
                         else {
                             Glide.with(this@EmployeeDetailActivity).load(mData?.profile_img).into(mEmployeeProfile)

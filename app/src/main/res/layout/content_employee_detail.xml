@@ -13,52 +13,116 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <TextView
-        android:id="@+id/tv_employee_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@+id/iv_employee_profile"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="이민재"/>
+        android:layout_marginLeft="15dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_employee_department"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/iv_employee_profile"
-        app:layout_constraintTop_toBottomOf="@+id/tv_employee_name"
-        android:text="부설연구소"/>
+        <TextView
+            android:id="@+id/tv_employee_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/iv_employee_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="27sp"
+            android:textColor="@color/colorBlack"
+            android:text="이민재"/>
 
-    <TextView
-        android:id="@+id/tv_employee_position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/tv_employee_department"
-        app:layout_constraintTop_toBottomOf="@+id/tv_employee_name"
-        android:text="사원"/>
+        <TextView
+            android:id="@+id/tv_employee_department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="부설연구소"/>
 
-    <TextView
-        android:id="@+id/tv_title_employee_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_employee_profile"
-        android:text="전화"/>
+        <TextView
+            android:id="@+id/tv_employee_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사원"/>
+
+    </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_title_employee_num"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/iv_employee_profile"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="전화"/>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_container_phone"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"-->
+<!--        android:background="@drawable/roundedtextviewbackground"-->
+<!--        android:padding="10dp"-->
+<!--        android:layout_marginTop="5dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title_employee_phone"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="휴대전화"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_employee_phone_num"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="010-6376-2215"/>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_container_extension_number"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ll_container_phone"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:background="@drawable/roundedtextviewbackground"-->
+<!--        android:padding="10dp"-->
+<!--        android:layout_marginTop="5dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title_employee_extension_num"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="내선번호"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_employee_extension_num"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="129"/>-->
+
+<!--    </LinearLayout>-->
 
     <TextView
         android:id="@+id/tv_title_employee_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"
+        app:layout_constraintTop_toBottomOf="@+id/iv_employee_profile"
+        android:layout_marginTop="20dp"
         android:text="휴대전화"/>
 
     <TextView
         android:id="@+id/tv_employee_phone_num"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_phone"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
+        android:background="@drawable/roundedtextviewbackground"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
         android:text="010-6376-2215"/>
 
     <TextView
@@ -66,15 +130,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_phone_num"
+        android:layout_marginTop="15dp"
         android:text="내선번호"/>
 
     <TextView
         android:id="@+id/tv_employee_extension_num"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_phone"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
+        android:background="@drawable/roundedtextviewbackground"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
         android:text="129"/>
 
     <TextView
@@ -82,15 +150,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_extension_num"
+        android:layout_marginTop="15dp"
         android:text="생일"/>
 
     <TextView
         android:id="@+id/tv_employee_birthdate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_birthdate"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
+        android:background="@drawable/roundedtextviewbackground"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
         android:text="1990년 8월 30일"/>
 
     <TextView
@@ -98,15 +170,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_birthdate"
+        android:layout_marginTop="15dp"
         android:text="입사일"/>
 
     <TextView
         android:id="@+id/tv_employee_joindate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_joindate"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_joindate"
+        android:background="@drawable/roundedtextviewbackground"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
         android:text="2020년 3월 23일"/>
 
 

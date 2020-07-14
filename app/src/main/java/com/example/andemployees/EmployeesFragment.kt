@@ -39,6 +39,19 @@ class EmployeesFragment : Fragment() {
 //        return inflater.inflate(R.layout.fragment_employees, container, false)
         val view: View = inflater.inflate(R.layout.fragment_employees, container, false)
 
+        // 대표이사
+        view.btn_department_ceo.setOnClickListener{ view ->
+            val intent = Intent(activity, EmployeesActivity::class.java)
+            intent.putExtra("departmentId", "29b745f5-c5bd-11ea-9982-20cf305809b8")
+            activity?.startActivity(intent)
+        }
+
+        // 임원진
+        view.btn_department_management.setOnClickListener{ view ->
+            val intent = Intent(activity, EmployeesActivity::class.java)
+            intent.putExtra("departmentId", "29b745f5-c5bd-11ea-9982-20cf305809b8")
+            activity?.startActivity(intent)
+        }
 
         // 관리부
         view.btn_department_management.setOnClickListener{ view ->

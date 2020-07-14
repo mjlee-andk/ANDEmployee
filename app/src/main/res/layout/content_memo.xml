@@ -8,14 +8,14 @@
     <EditText
         android:id="@+id/et_memo"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="100dp"
         android:ems="10"
         android:layout_margin="20dp"
         android:padding="3dp"
         android:inputType="textMultiLine|textNoSuggestions"
         android:cursorVisible="true"
         android:gravity="top"
-        android:background="@drawable/memo_border"
+        android:background="@drawable/roundedtextviewbackground"
         app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
