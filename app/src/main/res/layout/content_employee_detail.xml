@@ -3,4 +3,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.constraintlayout.widget.ConstraintLayout>
+    android:padding="15dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ImageView
+        android:id="@+id/iv_employee_profile"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_employee_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/iv_employee_profile"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="이민재"/>
+
+    <TextView
+        android:id="@+id/tv_employee_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/iv_employee_profile"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_name"
+        android:text="부설연구소"/>
+
+    <TextView
+        android:id="@+id/tv_employee_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_employee_department"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_name"
+        android:text="사원"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_employee_profile"
+        android:text="전화"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"
+        android:text="휴대전화"/>
+
+    <TextView
+        android:id="@+id/tv_employee_phone_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_phone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"
+        android:text="010-6376-2215"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_extension_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
+        android:text="내선번호"/>
+
+    <TextView
+        android:id="@+id/tv_employee_extension_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_phone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
+        android:text="129"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_birthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
+        android:text="생일"/>
+
+    <TextView
+        android:id="@+id/tv_employee_birthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_birthdate"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
+        android:text="1990년 8월 30일"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_joindate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
+        android:text="입사일"/>
+
+    <TextView
+        android:id="@+id/tv_employee_joindate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_title_employee_joindate"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
+        android:text="2020년 3월 23일"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

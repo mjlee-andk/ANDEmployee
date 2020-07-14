@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeDetailActivity">
+    tools:context=".MemoActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -19,17 +19,17 @@
 <!--            app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
         <Button
-            android:id="@+id/button_memo"
+            android:id="@+id/btn_savememo"
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
-            android:text="메모 작성"
+            android:text="저장"
             android:background="@color/colorPrimary"
             android:gravity="center"
             android:layout_gravity="end"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_employee_detail" />
+    <include layout="@layout/content_memo" />
 
 <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
 <!--        android:id="@+id/fab"-->
