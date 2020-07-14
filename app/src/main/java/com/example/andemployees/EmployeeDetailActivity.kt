@@ -66,11 +66,8 @@ class EmployeeDetailActivity : AppCompatActivity() {
 
                     if(mCode == 200) {
                         mEmployeeName.text = mData?.name
-                        // TODO 수정할 것
-                        mEmployeeDepartment.text = "계량기 사업 1부"
-                        mEmployeePosition.text = "사원"
-//                        mEmployeeDepartment.text = mData?.department_id
-//                        mEmployeePosition.text = mData?.position_id
+                        mEmployeeDepartment.text = mData?.department_name
+                        mEmployeePosition.text = mData?.position_name
                         mEmployeeExtensionNum.text = mData?.extension_number
                         mEmployeePhoneNum.text = mData?.phone
                         mEmployeeBirthdate.text = mData?.birth

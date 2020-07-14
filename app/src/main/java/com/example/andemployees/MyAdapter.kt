@@ -42,20 +42,15 @@ class MyAdapter(val context: Context, private val mItems: List<Result.TableEmplo
         val item = mItems[position]
 
         if(item.profile_img == null) {
-
             Glide.with(view).load(context.getString(R.string.basic_profile_url)).into(mEmployeesProfile)
         }
         else {
             Glide.with(view).load(item.profile_img).into(mEmployeesProfile)
         }
 
-        // TODO 수정할 것
         mEmployeesName.text = item.name
-        mEmployeesDepartment.text = "계량기 사업 1부"
-        mEmployeesPosition.text = "사원"
-//        mEmployeesName.text = item.name
-//        mEmployeesDepartment.text = item.department_id
-//        mEmployeesPosition.text = item.position_id
+        mEmployeesDepartment.text = item.department_name
+        mEmployeesPosition.text = item.position_name
 
         return view
     }

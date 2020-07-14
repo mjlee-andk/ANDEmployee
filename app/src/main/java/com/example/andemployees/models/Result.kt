@@ -74,8 +74,11 @@ class Result {
             var join_date: String = "",
             var leave_date: String = "",
             var division_id: String = "",
+            var division_name: String = "",
             var department_id: String = "",
-            var position_id: String = ""
+            var department_name: String = "",
+            var position_id: String = "",
+            var position_name: String = ""
     )
 
     data class TableMemo(
