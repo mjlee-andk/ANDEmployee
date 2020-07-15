@@ -15,9 +15,9 @@ class MainActivity : FragmentActivity() {
         supportFragmentManager.beginTransaction().add(R.id.container, EmployeesFragment()).commit()
 
         tabs = findViewById(R.id.tabs)
-        tabs.addTab(tabs.newTab().setText("주소록"))
-        tabs.addTab(tabs.newTab().setText("알리미"))
-        tabs.addTab(tabs.newTab().setText("익게"))
+        tabs.addTab(tabs.newTab().setText("부서 목록"))
+        tabs.addTab(tabs.newTab().setText("탭 1"))
+        tabs.addTab(tabs.newTab().setText("탭 2"))
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {

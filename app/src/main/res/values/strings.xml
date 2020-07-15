@@ -9,9 +9,9 @@
 
     <string name="employees_fragment">Hello contacts fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="notice_fragment">Hello notice fragment</string>
+    <string name="notice_fragment">준비중입니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="anonymous_fragment">Hello anonymous fragment</string>
+    <string name="anonymous_fragment">준비중입니다.</string>
     <string name="title_activity_employees">직원목록</string>
     <string name="title_activity_main">MainActivity</string>
 
@@ -19,16 +19,18 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_employee_detail">EmployeeDetailActivity</string>
     <string name="title_activity_memo">MemoActivity</string>
-    <string name="login_activity" translatable="false">로그인</string>
-    <string name="change_password_activity" translatable="false">비밀번호 변경</string>
+    <string name="login_activity">AND</string>
+    <string name="change_password_activity">비밀번호 변경</string>
 
-    <string name="prompt_password" translatable="false">Password</string>
-    <string name="prompt_password_confirm" translatable="false">Password Confirm</string>
-    <string name="prompt_email" translatable="false">Email</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="prompt_password_confirm">Password Confirm</string>
+    <string name="prompt_email">이메일 주소</string>
 
-    <string name="action_sign_in" translatable="false">로그인</string>
-    <string name="action_sign_in_short" translatable="false">로그인</string>
-    <string name="action_change_password" translatable="false">비밀번호 변경</string>
+    <string name="action_sign_in">로그인</string>
+    <string name="action_sign_in_short">로그인</string>
+    <string name="action_change_password">비밀번호 변경</string>
 
     <string name="basic_profile_url">https://kin-phinf.pstatic.net/20150101_166/1420120327193oRCl2_JPEG/1407920943510.jpg?type=w750</string>
+
+    <string name="hint_employees_search">검색할 이름을 입력해주세요.</string>
 </resources>
