@@ -1,25 +1,21 @@
 package com.example.andemployees
 
 import android.content.Context
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.bumptech.glide.Glide
 import com.example.andemployees.models.Result
 
-class MyAdapter(val context: Context, private val mItems: List<Result.TableEmployees>) : BaseAdapter() {
+class MyAdapter(val context: Context, private val mItems: ArrayList<Result.TableDepartments>) : BaseAdapter() {
     override fun getCount(): Int {
-        return mItems.size;
+        return mItems.size
     }
 
-    override fun getItem(position: Int): Result.TableEmployees {
+    override fun getItem(position: Int): Any? {
         return mItems[position]
     }
 
@@ -27,31 +23,30 @@ class MyAdapter(val context: Context, private val mItems: List<Result.TableEmplo
         return 0;
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.listview_custom, null)
+        val view : View
+        val holder: MyAdapter.ViewHolder
 
-        val mEmployeesProfile = view.findViewById<ImageView>(R.id.iv_employees_profile)
-        val mEmployeesName = view.findViewById<TextView>(R.id.tv_employees_name)
-        val mEmployeesDepartment = view.findViewById<TextView>(R.id.tv_employees_department)
-        val mEmployeesPosition = view.findViewById<TextView>(R.id.tv_employees_position)
+        if(convertView == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.listview_department, null)
+            holder = MyAdapter.ViewHolder()
 
-        mEmployeesProfile.background = ShapeDrawable(OvalShape())
-        mEmployeesProfile.clipToOutline = true
+            holder.departmentsName = view.findViewById(R.id.tv_departments_name)
 
-        val item = mItems[position]
-
-        if(item.profile_img == null) {
-            Glide.with(view).load(context.getString(R.string.basic_profile_url)).into(mEmployeesProfile)
-        }
-        else {
-            Glide.with(view).load(item.profile_img).into(mEmployeesProfile)
+            view.tag = holder
+        } else {
+            holder = convertView.tag as MyAdapter.ViewHolder
+            view = convertView
         }
 
-        mEmployeesName.text = item.name
-        mEmployeesDepartment.text = item.department_name
-        mEmployeesPosition.text = item.position_name
+        val department = mItems[position]
+
+        holder.departmentsName?.text = department.name
 
         return view
+    }
+
+    private class ViewHolder {
+        var departmentsName : TextView? = null
     }
 }

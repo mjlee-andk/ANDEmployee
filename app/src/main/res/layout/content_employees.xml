@@ -41,7 +41,7 @@
         android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="@+id/ll_employees_searchbar"
         android:layout_marginTop="1dp"
-        android:background="@color/colorBlack"/>
+        android:background="@color/colorView"/>
 
     <ListView
         android:id="@+id/listView"

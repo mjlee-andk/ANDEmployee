@@ -24,7 +24,7 @@ class EmployeeDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_employee_detail)
-        setSupportActionBar(findViewById(R.id.toolbar))
+//        setSupportActionBar(findViewById(R.id.toolbar))
 
         val mIntent = intent
         //TODO id값들 서버에서 받아온것으로 바꾸기

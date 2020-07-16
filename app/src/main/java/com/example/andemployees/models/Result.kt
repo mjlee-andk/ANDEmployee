@@ -51,6 +51,7 @@ class Result {
     data class TableDepartments(
         var id: String = "",
         var division_id: String = "",
+        var division_name: String = "",
         var name: String = "",
         var telephone: String = ""
     )

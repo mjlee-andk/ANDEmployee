@@ -69,10 +69,10 @@ public interface RetrofitAPI {
     )
     : Call<Result.ResultBasic>
 
-    // 메모 조회하기
+    // 부서 조회하기
     @GET("/api/departments")
     fun getDepartments(
-        @Query("division_id") division_id: String
+//        @Query("division_id") division_id: String
     )
     : Call<Result.ResultDepartments>
 

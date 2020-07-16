@@ -15,14 +15,13 @@ import retrofit2.Response
 class EmployeesActivity : AppCompatActivity() {
 
     lateinit var adapter: SearchAdapter
-
     lateinit var list: ArrayList<Result.TableEmployees>
     lateinit var arraylist: ArrayList<Result.TableEmployees>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_employees)
-        setSupportActionBar(findViewById(R.id.toolbar))
+//        setSupportActionBar(findViewById(R.id.toolbar))
 
         val mIntent = intent
         var mDepartmentId = mIntent.getStringExtra("departmentId")

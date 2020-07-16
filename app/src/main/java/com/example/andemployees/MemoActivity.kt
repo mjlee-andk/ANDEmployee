@@ -19,7 +19,7 @@ class MemoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memo)
-        setSupportActionBar(findViewById(R.id.toolbar))
+//        setSupportActionBar(findViewById(R.id.toolbar))
 
         var mMemoId = ""
         val mIntent = intent
