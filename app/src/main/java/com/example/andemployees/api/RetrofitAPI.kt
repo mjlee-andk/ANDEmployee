@@ -74,7 +74,7 @@ public interface RetrofitAPI {
     fun getDepartments(
 //        @Query("division_id") division_id: String
     )
-    : Call<Result.ResultDepartments>
+    : Call<Result.ResultDevisions>
 
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"

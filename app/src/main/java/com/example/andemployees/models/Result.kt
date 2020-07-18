@@ -42,16 +42,23 @@ class Result {
         var data: TableMemo
     )
 
-    data class ResultDepartments(
+    data class ResultDevisions(
         var code: Int = 404,
         var message: String = "",
-        var data: List<TableDepartments>
+        var data: List<TableDevisions>
+    )
+
+    data class TableDevisions(
+        var id: String = "",
+        var name: String = "",
+        var address: String = "",
+        var telephone: String = "",
+        var departments: List<TableDepartments>
     )
 
     data class TableDepartments(
         var id: String = "",
         var division_id: String = "",
-        var division_name: String = "",
         var name: String = "",
         var telephone: String = ""
     )

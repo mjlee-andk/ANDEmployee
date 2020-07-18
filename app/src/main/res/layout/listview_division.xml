@@ -3,15 +3,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorDivisionBackground"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:paddingLeft="15dp">
 
     <TextView
-        android:id="@+id/tv_department_name"
+        android:id="@+id/tv_division_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="20sp"
-        android:text="이름"
-        android:padding="15dp"/>
+        android:textColor="@color/colorWhite"
+        android:textSize="17sp"
+        android:text="ADK"/>
 
 </LinearLayout>
