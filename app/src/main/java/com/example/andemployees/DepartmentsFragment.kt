@@ -46,8 +46,6 @@ class EmployeesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_employees, container, false)
         val view: View = inflater.inflate(R.layout.fragment_departments, container, false)
 
         val api = RetrofitAPI.create()
@@ -74,7 +72,7 @@ class EmployeesFragment : Fragment() {
                     mListView.expandGroup(0)
                     mListView.expandGroup(1)
                     mListView.setOnGroupExpandListener {
-                        Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+
                     }
 
                     mListView.setOnGroupCollapseListener {

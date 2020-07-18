@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBoardPage"
     tools:context=".NoticeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lv_boards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/notice_fragment" />
+        android:dividerHeight="0px"
+        android:background="@color/colorWhite"
+        android:divider="@color/colorWhite"
+        android:layout_marginTop="5dp"/>
 
 </FrameLayout>

@@ -72,9 +72,16 @@ public interface RetrofitAPI {
     // 부서 조회하기
     @GET("/api/departments")
     fun getDepartments(
-//        @Query("division_id") division_id: String
+
     )
     : Call<Result.ResultDevisions>
+
+    // 게시글 조회하기
+    @GET("/api/boards")
+    fun getBoards(
+        @Query("category_id") category_id: String
+    )
+    : Call<Result.ResultBoards>
 
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"

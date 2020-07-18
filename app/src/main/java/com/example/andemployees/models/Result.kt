@@ -48,6 +48,29 @@ class Result {
         var data: List<TableDevisions>
     )
 
+    data class ResultBoards(
+        var code: Int = 404,
+        var message: String = "",
+        var data: List<TableBoards>
+    )
+
+    data class TableBoards(
+        var id: String = "",
+        var user_id: String ="",
+        var user_name: String = "",
+        var category_id: String = "",
+        var category_name: String = "",
+        var title: String = "",
+        var contents: String = "",
+        var image: String = "",
+        var date: String = "",
+        var click_count: Int = 0,
+        var like_count: Int = 0,
+        var comment_count: Int = 0,
+        var like_clicked: Boolean = false,
+        var tag_clicked: Boolean = false
+    )
+
     data class TableDevisions(
         var id: String = "",
         var name: String = "",
