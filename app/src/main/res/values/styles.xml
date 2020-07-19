@@ -24,4 +24,8 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="whiteTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
 </resources>

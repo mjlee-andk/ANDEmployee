@@ -47,68 +47,44 @@ class NoticeFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_notice, container, false)
 
-        /*위젯과 멤버변수 참조 획득*/
-        val mListView = view.findViewById(R.id.lv_boards) as ListView
+        val api = RetrofitAPI.create()
+        // TODO 수정해야함
+        api.getBoards( getString(R.string.category_notice), getString(R.string.user_id_dummy) ).enqueue(object: Callback<Result.ResultBoards> {
+            override fun onResponse(
+                call: Call<Result.ResultBoards>,
+                response: Response<Result.ResultBoards>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+                var mData = response.body()?.data
 
-        list = ArrayList()
+                if(mCode == 200) {
 
-        var tempData = Result.TableBoards()
-        tempData.user_name = "부설연구소 이민재"
-        tempData.category_name = "공지사항"
-        tempData.title = "ADK 000 결혼식 축의금 각출 안내"
-        tempData.contents = "ADK 000 의 결혼식 축의금 각출 안내드립니다. 각출을 원하시는 분은 관리부 000 에게 00월 00일까지 메일을 보내주시기 바랍니다. 기타 궁금한 사항은 관리부 00에게 문의 주세요. 감사합니다."
-        tempData.date = "10분전"
-        tempData.click_count = 23
-        tempData.like_count = 15
-        tempData.comment_count = 5
-        tempData.like_clicked = true
-        tempData.tag_clicked = false
+                    /*위젯과 멤버변수 참조 획득*/
+                    val mListView = view.findViewById(R.id.lv_boards) as ListView
 
-        for (i in 1..10) {
-            list.add(tempData)
-        }
-        adapter = context?.let { BoardAdapter(it, list) }!!
-        mListView.adapter = adapter
+                    list = ArrayList()
+                    if (mData != null) {
+                        list.addAll(mData)
+                    }
+                    adapter = context?.let { BoardAdapter(it, list) }!!
+                    mListView.adapter = adapter
 
+                    mListView.setOnItemClickListener { adapterView, view, i, l ->
+                       // 게시글 상세 페이지로 이동
+                        val intent = Intent(activity, BoardDetailActivity::class.java)
+//                        intent.putExtra("departmentId", selectedDepartment.id)
+                        startActivity(intent)
+                    }
+                }
+            }
 
-        mListView.setOnItemClickListener{ adapterView, view, i, l ->
+            override fun onFailure(call: Call<Result.ResultBoards>, t: Throwable) {
+                Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
-        }
         return view
-//        val api = RetrofitAPI.create()
-//        api.getBoards("").enqueue(object: Callback<Result.ResultBoards> {
-//            override fun onResponse(
-//                call: Call<Result.ResultBoards>,
-//                response: Response<Result.ResultBoards>
-//            ) {
-//                var mCode = response.body()?.code
-//                var mMessage = response.body()?.message
-//                var mData = response.body()?.data
-//
-//                if(mCode == 200) {
-//
-//                    /*위젯과 멤버변수 참조 획득*/
-//                    val mListView = view.findViewById(R.id.lv_boards) as ListView
-//
-//                    list = ArrayList()
-//                    if (mData != null) {
-//                        list.addAll(mData)
-//                    }
-//                    adapter = context?.let { BoardAdapter(it, list) }!!
-//
-//
-//                    mListView.setOnClickListener{
-//                       // 게시글 상세 페이지로 이동
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Result.ResultBoards>, t: Throwable) {
-//                Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//
-//        return view
     }
 
     companion object {

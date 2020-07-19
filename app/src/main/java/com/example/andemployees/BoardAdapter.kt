@@ -1,18 +1,15 @@
 package com.example.andemployees
 
 import android.content.Context
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.annotation.RequiresApi
-import com.bumptech.glide.Glide
+import android.widget.*
+import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class BoardAdapter(val context: Context, private val boards: ArrayList<Result.TableBoards>) : BaseAdapter() {
 
@@ -33,7 +30,7 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         val holder: ViewHolder
 
         if(convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.listview_board, null)
+            view = LayoutInflater.from(context).inflate(R.layout.listview_boards, null)
             holder = ViewHolder()
 
             holder.boardsCategory = view.findViewById(R.id.tv_board_category)
@@ -41,12 +38,11 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
             holder.boardsContent = view.findViewById(R.id.tv_board_content)
             holder.boardsWriter = view.findViewById(R.id.tv_board_writer)
             holder.boardsClickCount = view.findViewById(R.id.tv_board_click_count)
-            holder.boardslikeCount = view.findViewById(R.id.tv_board_like_count)
+            holder.boardsLikeCount = view.findViewById(R.id.tv_board_like_count)
             holder.boardsCommentCount = view.findViewById(R.id.tv_board_comment_count)
             holder.boardsDate = view.findViewById(R.id.tv_board_date)
 
             holder.boardsLikeClicked = view.findViewById(R.id.iv_board_like)
-            holder.boardsTagClicked = view.findViewById(R.id.iv_board_tag)
 
             view.tag = holder
         } else {
@@ -61,12 +57,50 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         holder.boardsContent?.text = board.contents
         holder.boardsWriter?.text = board.user_name
         holder.boardsClickCount?.text = board.click_count.toString()
-        holder.boardslikeCount?.text = board.like_count.toString()
+        holder.boardsLikeCount?.text = board.like_count.toString()
         holder.boardsCommentCount?.text = board.comment_count.toString()
-        holder.boardsDate?.text = board.date
+        holder.boardsDate?.text = board.createdat
 
         holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
-        holder.boardsTagClicked?.setImageResource(R.drawable.icon_tag)
+        holder.boardsLikeClicked?.tag = R.drawable.icon_like
+        if(board.like_clicked) {
+            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
+            holder.boardsLikeClicked?.tag = R.drawable.icon_like_selected
+        }
+
+        holder.boardsLikeClicked.setOnClickListener{
+            val api = RetrofitAPI.create()
+            // TODO 수정해야함
+            api.boardLike( board.id, context.getString(R.string.user_id_dummy) ).enqueue(object:
+                Callback<Result.ResultBasic> {
+                override fun onResponse(
+                    call: Call<Result.ResultBasic>,
+                    response: Response<Result.ResultBasic>
+                ) {
+                    var mCode = response.body()?.code
+                    var mMessage = response.body()?.message
+
+                    if(mCode == 200) {
+                        // 좋아요 취소
+                        if(holder.boardsLikeClicked?.tag == R.drawable.icon_like_selected) {
+                            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
+                            holder.boardsLikeClicked?.tag = R.drawable.icon_like
+                            holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() - 1).toString()
+                        }
+                        // 좋아요
+                        else {
+                            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
+                            holder.boardsLikeClicked?.tag = R.drawable.icon_like_selected
+                            holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() + 1).toString()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                    Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
 
         return view
     }
@@ -77,10 +111,9 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         var boardsContent : TextView? = null
         var boardsWriter : TextView? = null
         var boardsClickCount : TextView? = null
-        var boardslikeCount : TextView? = null
+        var boardsLikeCount : TextView? = null
         var boardsCommentCount : TextView? = null
         var boardsDate : TextView? = null
         lateinit var boardsLikeClicked : ImageView
-        lateinit var boardsTagClicked : ImageView
     }
 }

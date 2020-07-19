@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="0px"
-        android:background="@color/colorWhite"
-        android:divider="@color/colorWhite"
-        android:layout_marginTop="5dp"/>
+        android:background="@color/colorBoardPage"
+        android:divider="@color/colorWhite"/>
 
 </FrameLayout>

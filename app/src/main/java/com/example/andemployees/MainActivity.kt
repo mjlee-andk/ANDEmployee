@@ -16,7 +16,7 @@ class MainActivity : FragmentActivity() {
 
         tabs = findViewById(R.id.tabs)
         tabs.addTab(tabs.newTab().setText("부서 목록"))
-        tabs.addTab(tabs.newTab().setText("탭 1"))
+        tabs.addTab(tabs.newTab().setText("게시판"))
         tabs.addTab(tabs.newTab().setText("탭 2"))
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{

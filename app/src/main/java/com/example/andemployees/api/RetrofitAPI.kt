@@ -79,9 +79,27 @@ public interface RetrofitAPI {
     // 게시글 조회하기
     @GET("/api/boards")
     fun getBoards(
-        @Query("category_id") category_id: String
+        @Query("category_id") category_id: String,
+        @Query("user_id") user_id: String
     )
     : Call<Result.ResultBoards>
+
+    // 게시글 상세 조회하기
+    @GET("/api/board")
+    fun getBoardDetail(
+        @Query("board_id") board_id: String,
+        @Query("user_id") user_id: String
+    )
+    : Call<Result.TableBoards>
+
+    // 게시글 좋아요/좋아요취소
+    @FormUrlEncoded
+    @POST("/api/board/like")
+    fun boardLike(
+        @Field("board_id") board_id: String,
+        @Field("user_id") user_id: String
+    )
+    : Call<Result.ResultBasic>
 
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"

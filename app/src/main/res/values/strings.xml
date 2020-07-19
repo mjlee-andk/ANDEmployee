@@ -8,9 +8,7 @@
     <string name="previous">Previous</string>
 
     <string name="employees_fragment">Hello contacts fragment</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="notice_fragment">준비중입니다.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="anonymous_fragment">준비중입니다.</string>
     <string name="title_activity_employees">직원목록</string>
     <string name="title_activity_main">MainActivity</string>
@@ -33,4 +31,9 @@
     <string name="basic_profile_url">https://kin-phinf.pstatic.net/20150101_166/1420120327193oRCl2_JPEG/1407920943510.jpg?type=w750</string>
 
     <string name="hint_employees_search">검색할 이름을 입력해주세요.</string>
+
+
+    <string name="category_notice">6797f061-c997-11ea-9982-20cf305809b8</string>
+    <string name="user_id_dummy">d204d659-c1e2-11ea-9982-20cf305809b8</string>
+
 </resources>

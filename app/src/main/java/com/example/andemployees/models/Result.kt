@@ -63,12 +63,22 @@ class Result {
         var title: String = "",
         var contents: String = "",
         var image: String = "",
-        var date: String = "",
-        var click_count: Int = 0,
-        var like_count: Int = 0,
+        var createdat: String = "",
         var comment_count: Int = 0,
         var like_clicked: Boolean = false,
-        var tag_clicked: Boolean = false
+        var updatedat: String = "",
+        var click_count: Int = 0,
+        var like_count: Int = 0,
+        var comments: List<TableBoardComments>
+    )
+
+    data class TableBoardComments(
+        var id: String = "",
+        var user_id: String = "",
+        var user_name: String = "",
+        var comment: String = "",
+        var createdat: String = "",
+        var updatedat: String = ""
     )
 
     data class TableDevisions(
@@ -117,6 +127,7 @@ class Result {
         var user_id: String = "",
         var employee_id: String = "",
         var memo: String = "",
-        var date: String = ""
+        var createdat: String = "",
+        var updatedat: String = ""
     )
 }
