@@ -19,15 +19,30 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
             android:id="@+id/et_board_detail_comment_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@null"
             android:hint="댓글을 남겨주세요.">
 
         </EditText>
+
+        <Button
+            android:id="@+id/btn_board_detail_add_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorCategory"
+            android:background="@color/colorWhite"
+            android:visibility="invisible"
+            android:text="등록">
+
+        </Button>
 
     </LinearLayout>
 

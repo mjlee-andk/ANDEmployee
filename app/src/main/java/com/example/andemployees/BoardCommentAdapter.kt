@@ -1,5 +1,7 @@
 package com.example.andemployees
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +9,15 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class BoardCommentAdapter(val context: Context, private val comments: ArrayList<Result.TableBoardComments>) : BaseAdapter() {
+
+    val api = RetrofitAPI.create()
+    // TODO mUserId 수정해야함
+    private val mUserId = context.getString(R.string.user_id_dummy)
 
     override fun getCount(): Int {
         return comments.size;
@@ -38,6 +47,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             holder.boardCommentsLikeCount = view.findViewById(R.id.tv_board_comments_like_count)
             holder.boardCommentsLike = view.findViewById(R.id.iv_board_comments_like)
             holder.boardCommentsLikeContainer = view.findViewById(R.id.ll_board_comments_like_container)
+            holder.boardCommentsMore = view.findViewById(R.id.iv_board_comments_more)
 
             view.tag = holder
         } else {
@@ -53,36 +63,72 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         holder.boardCommentsComment?.text = comment.comment
         holder.boardCommentsDate?.text = comment.createdat
 //        holder.boardCommentsLikeCount?.text =  "좋아요 " + comment.like_count.toString()
+        holder.boardCommentsLikeCount?.text = comment.like_count.toString()
 
         holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
         holder.boardCommentsLike.tag = R.drawable.icon_like
 
-//        if(comment.like_clicked) {
-//            holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
-//            holder.boardCommentsLike.tag = R.drawable.icon_like_selected
-//        }
+        if(comment.like_clicked) {
+            holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
+            holder.boardCommentsLike.tag = R.drawable.icon_like_selected
+        }
 
         holder.boardCommentsLikeContainer?.setOnClickListener {
-            val api = RetrofitAPI.create()
-            // TODO 댓글 좋아요 api 추가해야함
-//            api.board( board.id, context.getString(R.string.user_id_dummy) ).enqueue(object:
-//                Callback<Result.ResultBasic> {
-//                override fun onResponse(
-//                    call: Call<Result.ResultBasic>,
-//                    response: Response<Result.ResultBasic>
-//                ) {
-//                    var mCode = response.body()?.code
-//                    var mMessage = response.body()?.message
+            // 좋아요 취소
+            if(holder.boardCommentsLike.tag == R.drawable.icon_like_selected) {
+                holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
+                holder.boardCommentsLike.tag = R.drawable.icon_like
+//                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
+                holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
+            }
+            // 좋아요
+            else {
+                holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
+                holder.boardCommentsLike.tag = R.drawable.icon_like_selected
+//                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
+                holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
+            }
+
+            api.commentLike(comment.id, mUserId).enqueue(object: Callback<Result.ResultBasic> {
+                override fun onResponse(
+                    call: Call<Result.ResultBasic>,
+                    response: Response<Result.ResultBasic>
+                ) {
+                    var mCode = response.body()?.code
+                    var mMessage = response.body()?.message
+
+                    if(mCode == 200) {
+
+                    }
+                }
+
+                override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                    Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        // TODO mUserId 수정해야함
+        holder.boardCommentsMore.setOnClickListener {
+
+//            val mItems = arrayOf("수정하기", "삭제하기")
 //
-//                    if(mCode == 200) {
+//            if(comment.user_id == mUserId) {
+//                val mDialog = AlertDialog.Builder(context,
+//                android.R.style.Theme_DeviceDefault_Dialog_Alert)
+//
+//                mDialog.setTitle("")
+//                mDialog.setItems(mItems) { dialog, which ->
+//                    if(which == 0) {
+//
+//                    }
+//                    else {
 //
 //                    }
 //                }
 //
-//                override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-//                    Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//            })
+//                mDialog.show()
+//            }
         }
 
         return view
@@ -96,6 +142,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         var boardCommentsDate : TextView? = null
         var boardCommentsLikeCount : TextView? = null
         lateinit var boardCommentsLike : ImageView
+        lateinit var boardCommentsMore : ImageView
 
         var boardCommentsLikeContainer : LinearLayout? = null
     }

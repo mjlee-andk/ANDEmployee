@@ -63,18 +63,20 @@
 
         <TextView
             android:id="@+id/tv_board_comments_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:text="날짜"/>
 
         <LinearLayout
             android:id="@+id/ll_board_comments_like_container"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="8">
 
             <ImageView
                 android:id="@+id/iv_board_comments_like"
@@ -90,6 +92,14 @@
                 android:text="좋아요 2"/>
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_board_comments_more"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/icon_more"/>
 
     </LinearLayout>
 

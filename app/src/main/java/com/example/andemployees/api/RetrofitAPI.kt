@@ -101,12 +101,22 @@ public interface RetrofitAPI {
     )
     : Call<Result.ResultBasic>
 
-    // 게시글 좋아요/좋아요취소
+    // 댓글 좋아요/좋아요취소
     @FormUrlEncoded
     @POST("/api/comment/like")
     fun commentLike(
         @Field("comment_id") comment_id: String,
         @Field("user_id") user_id: String
+    )
+    : Call<Result.ResultBasic>
+
+    // 댓글 추가
+    @FormUrlEncoded
+    @POST("/api/comment/add")
+    fun addComment(
+        @Field("board_id") board_id: String,
+        @Field("user_id") user_id: String,
+        @Field("comment") comment: String
     )
     : Call<Result.ResultBasic>
 

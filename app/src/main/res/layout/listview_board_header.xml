@@ -118,6 +118,7 @@
             android:background="@color/colorView"/>
 
         <LinearLayout
+            android:id="@+id/ll_board_header_share_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
