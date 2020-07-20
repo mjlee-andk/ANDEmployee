@@ -54,6 +54,12 @@ class Result {
         var data: List<TableBoards>
     )
 
+    data class ResultBoard(
+        var code: Int = 404,
+        var message: String = "",
+        var data: TableBoards
+    )
+
     data class TableBoards(
         var id: String = "",
         var user_id: String ="",
@@ -76,7 +82,11 @@ class Result {
         var id: String = "",
         var user_id: String = "",
         var user_name: String = "",
+        var division_name: String = "",
+        var department_name: String = "",
         var comment: String = "",
+        var like_clicked: Boolean = false,
+        var like_count: Int = 0,
         var createdat: String = "",
         var updatedat: String = ""
     )

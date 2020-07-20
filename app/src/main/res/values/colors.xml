@@ -11,6 +11,7 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorCategory">#bd181d</color>
     <color name="colorBoardPreview">#aeb3b9</color>
+    <color name="colorBoardCommentID">#4C5564</color>
     <color name="colorBoardPage">#eaeaea</color>
     <color name="colorBlack">#000000</color>
     <color name="colorDivisionBackground">#323233</color>

@@ -71,9 +71,9 @@ class NoticeFragment : Fragment() {
                     mListView.adapter = adapter
 
                     mListView.setOnItemClickListener { adapterView, view, i, l ->
-                       // 게시글 상세 페이지로 이동
+                        val selectedBoard = list[i]
                         val intent = Intent(activity, BoardDetailActivity::class.java)
-//                        intent.putExtra("departmentId", selectedDepartment.id)
+                        intent.putExtra("boardId", selectedBoard.id)
                         startActivity(intent)
                     }
                 }

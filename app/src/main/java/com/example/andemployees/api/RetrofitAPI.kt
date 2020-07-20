@@ -90,13 +90,22 @@ public interface RetrofitAPI {
         @Query("board_id") board_id: String,
         @Query("user_id") user_id: String
     )
-    : Call<Result.TableBoards>
+    : Call<Result.ResultBoard>
 
     // 게시글 좋아요/좋아요취소
     @FormUrlEncoded
     @POST("/api/board/like")
     fun boardLike(
         @Field("board_id") board_id: String,
+        @Field("user_id") user_id: String
+    )
+    : Call<Result.ResultBasic>
+
+    // 게시글 좋아요/좋아요취소
+    @FormUrlEncoded
+    @POST("/api/comment/like")
+    fun commentLike(
+        @Field("comment_id") comment_id: String,
         @Field("user_id") user_id: String
     )
     : Call<Result.ResultBasic>
