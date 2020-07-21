@@ -148,7 +148,7 @@ public interface RetrofitAPI {
     )
     : Call<Result.ResultBasic>
 
-    // 게시글 추가
+    // 게시글 수정
     @FormUrlEncoded
     @POST("/api/board/update")
     fun updateBoard(
@@ -164,6 +164,15 @@ public interface RetrofitAPI {
     @GET("/api/board/categories")
     fun getBoardCategories()
     : Call<Result.ResultBoardCategories>
+
+    // 댓글 수정
+    @FormUrlEncoded
+    @POST("/api/comment/update")
+    fun updateComment(
+        @Field("comment_id") board_id: String,
+        @Field("comment") category_id: String
+    )
+    : Call<Result.ResultBasic>
 
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"

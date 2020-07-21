@@ -1,21 +1,26 @@
 package com.example.andemployees
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class BoardCommentAdapter(val context: Context, private val comments: ArrayList<Result.TableBoardComments>) : BaseAdapter() {
 
     val api = RetrofitAPI.create()
+    lateinit var view : View
+
     // TODO mUserId 수정해야함
     private val mUserId = context.getString(R.string.user_id_dummy)
 
@@ -32,7 +37,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
     }
 
     override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
-        val view : View
+//        val view : View
         val holder: ViewHolder
 
         if(convertView == null) {
@@ -92,7 +97,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             commentLike(comment.id, mUserId)
         }
 
-        // TODO mUserId 수정해야함
+        // TODO mUserId 수정해야함, 수정하기 만들어야함
         holder.boardCommentsMore.setOnClickListener {
             val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
             val items = arrayOf("수정하기", "삭제하기")
@@ -100,7 +105,39 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                 when(which) {
                     // 수정하기
                     0 -> {
+                        val editCommentDialogBuilder = AlertDialog.Builder(context)
+                        val imm: InputMethodManager? = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                        val customLayout = LayoutInflater.from(context).inflate(R.layout.dialog_comment_edit, null)
+                        var commentEditText = customLayout.findViewById<EditText>(R.id.et_board_comment_edit)
 
+                        commentEditText.setText(comment.comment)
+                        commentEditText.setSelection(commentEditText.length())
+                        editCommentDialogBuilder.setView(customLayout)
+                        editCommentDialogBuilder.setPositiveButton("수정") { dialogInterface, i ->
+                            var inputComment = commentEditText.text
+                            if(inputComment.isEmpty()) {
+                                Toast.makeText(context, context.getString(R.string.hint_contents), Toast.LENGTH_SHORT).show()
+                                return@setPositiveButton
+                            }
+
+                            updateComment(comment.id, inputComment.toString())
+                            // 키보드 숨기기
+                            imm?.toggleSoftInput(
+                                InputMethodManager.HIDE_IMPLICIT_ONLY, 0
+                            )
+
+                            notifyDataSetChanged()
+                        }
+                        editCommentDialogBuilder.setNegativeButton("취소") { dialogInterface, i ->
+
+                        }
+                        editCommentDialogBuilder.show()
+
+                        // 키보드 띄우기
+                        imm?.toggleSoftInput(
+                            InputMethodManager.SHOW_FORCED,
+                            InputMethodManager.HIDE_IMPLICIT_ONLY
+                        )
                     }
                     // 삭제하기
                     1 -> {
@@ -157,6 +194,27 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         })
     }
 
+    private fun updateComment(commentId: String, comment: String){
+        api.updateComment(commentId, comment).enqueue(object: Callback<Result.ResultBasic> {
+            override fun onResponse(
+                call: Call<Result.ResultBasic>,
+                response: Response<Result.ResultBasic>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+
+                if(mCode == 200) {
+//                    notifyDataSetChanged()
+                    view.findViewById<TextView>(R.id.tv_board_comments_comment).text = comment
+                }
+            }
+
+            override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun deleteComment(commentId: String) {
         api.deleteComment(commentId).enqueue(object:
             Callback<Result.ResultBasic> {
@@ -173,7 +231,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

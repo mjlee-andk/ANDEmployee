@@ -1,9 +1,12 @@
 package com.example.andemployees
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.iid.FirebaseInstanceId
 
 class MainActivity : FragmentActivity() {
     lateinit var tabs: TabLayout;
@@ -48,27 +51,16 @@ class MainActivity : FragmentActivity() {
             }
 
         })
-//        setSupportActionBar(findViewById(R.id.toolbar))
-//
-//        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
-    }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        return when (item.itemId) {
-//            R.id.action_settings -> true
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if(!it.isSuccessful) {
+                    Log.w("FCM Log", "getInstanceId failed", it.exception)
+                    return@addOnCompleteListener
+                }
+                val token = it.result?.token
+                Log.d("FCM Log", "FCM 토큰 $token")
+                Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+            }
+    }
 }
