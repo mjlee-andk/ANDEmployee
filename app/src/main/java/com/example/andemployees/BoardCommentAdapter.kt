@@ -89,46 +89,36 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                 holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
             }
 
-            api.commentLike(comment.id, mUserId).enqueue(object: Callback<Result.ResultBasic> {
-                override fun onResponse(
-                    call: Call<Result.ResultBasic>,
-                    response: Response<Result.ResultBasic>
-                ) {
-                    var mCode = response.body()?.code
-                    var mMessage = response.body()?.message
-
-                    if(mCode == 200) {
-
-                    }
-                }
-
-                override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                    Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
+            commentLike(comment.id, mUserId)
         }
 
         // TODO mUserId 수정해야함
         holder.boardCommentsMore.setOnClickListener {
+            val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
+            val items = arrayOf("수정하기", "삭제하기")
+            dialogBuilder.setItems(items) { _, which ->
+                when(which) {
+                    // 수정하기
+                    0 -> {
 
-//            val mItems = arrayOf("수정하기", "삭제하기")
-//
-//            if(comment.user_id == mUserId) {
-//                val mDialog = AlertDialog.Builder(context,
-//                android.R.style.Theme_DeviceDefault_Dialog_Alert)
-//
-//                mDialog.setTitle("")
-//                mDialog.setItems(mItems) { dialog, which ->
-//                    if(which == 0) {
-//
-//                    }
-//                    else {
-//
-//                    }
-//                }
-//
-//                mDialog.show()
-//            }
+                    }
+                    // 삭제하기
+                    1 -> {
+                        val deleteDialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
+                        deleteDialogBuilder.setMessage(context.getString(R.string.alert_delete))
+                        deleteDialogBuilder.setPositiveButton("삭제") { _, _ ->
+                            deleteComment(comment.id)
+                        }
+
+                        deleteDialogBuilder.setNegativeButton("유지") { _, _ ->
+
+                        }
+                        deleteDialogBuilder.show()
+                    }
+                }
+            }
+
+            dialogBuilder.show()
         }
 
         return view
@@ -145,5 +135,46 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         lateinit var boardCommentsMore : ImageView
 
         var boardCommentsLikeContainer : LinearLayout? = null
+    }
+
+    private fun commentLike(commentId: String, userId: String) {
+        api.commentLike(commentId, userId).enqueue(object: Callback<Result.ResultBasic> {
+            override fun onResponse(
+                call: Call<Result.ResultBasic>,
+                response: Response<Result.ResultBasic>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+
+                if(mCode == 200) {
+
+                }
+            }
+
+            override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun deleteComment(commentId: String) {
+        api.deleteComment(commentId).enqueue(object:
+            Callback<Result.ResultBasic> {
+            override fun onResponse(
+                call: Call<Result.ResultBasic>,
+                response: Response<Result.ResultBasic>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+
+                if(mCode == 200) {
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

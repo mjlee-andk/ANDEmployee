@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.example.andemployees.api.RetrofitAPI
@@ -33,23 +33,47 @@ class NoticeFragment : Fragment() {
     lateinit var adapter: BoardAdapter
     lateinit var list: ArrayList<Result.TableBoards>
 
+    lateinit var mCategoryId: String
+    lateinit var mUserId: String
+
+    val api = RetrofitAPI.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        mCategoryId = ""
+        mUserId = getString(R.string.user_id_dummy)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_notice, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_board, container, false)
 
-        val api = RetrofitAPI.create()
+        // TODO 임시버튼이므로 삭제해야함 게시글 등록 테스트를 위해 만듬
+        view.findViewById<Button>(R.id.btn_board_add).setOnClickListener {
+            val intent = Intent(activity, BoardEditActivity::class.java)
+            startActivity(intent)
+        }
+        getBoards(mCategoryId, mUserId)
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getBoards(mCategoryId, mUserId)
+    }
+
+    private fun getBoards(categoryId: String, userId: String) {
         // TODO 수정해야함
-        api.getBoards( getString(R.string.category_notice), getString(R.string.user_id_dummy) ).enqueue(object: Callback<Result.ResultBoards> {
+        api.getBoards( categoryId, userId ).enqueue(object: Callback<Result.ResultBoards> {
             override fun onResponse(
                 call: Call<Result.ResultBoards>,
                 response: Response<Result.ResultBoards>
@@ -61,7 +85,7 @@ class NoticeFragment : Fragment() {
                 if(mCode == 200) {
 
                     /*위젯과 멤버변수 참조 획득*/
-                    val mListView = view.findViewById(R.id.lv_boards) as ListView
+                    val mListView = view?.findViewById(R.id.lv_boards) as ListView
 
                     list = ArrayList()
                     if (mData != null) {
@@ -83,8 +107,6 @@ class NoticeFragment : Fragment() {
                 Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
             }
         })
-
-        return view
     }
 
     companion object {

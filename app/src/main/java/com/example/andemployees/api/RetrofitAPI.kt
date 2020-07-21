@@ -120,6 +120,51 @@ public interface RetrofitAPI {
     )
     : Call<Result.ResultBasic>
 
+    // 게시글 삭제
+    @FormUrlEncoded
+    @POST("/api/board/delete")
+    fun deleteBoard(
+        @Field("board_id") board_id: String
+    )
+    : Call<Result.ResultBasic>
+
+    // 댓글 삭제
+    @FormUrlEncoded
+    @POST("/api/comment/delete")
+    fun deleteComment(
+        @Field("comment_id") comment_id: String
+    )
+    : Call<Result.ResultBasic>
+
+    // 게시글 추가
+    @FormUrlEncoded
+    @POST("/api/board/add")
+    fun addBoard(
+        @Field("user_id") user_id: String,
+        @Field("category_id") category_id: String,
+        @Field("title") title: String,
+        @Field("contents") contents: String,
+        @Field("image") image: String?
+    )
+    : Call<Result.ResultBasic>
+
+    // 게시글 추가
+    @FormUrlEncoded
+    @POST("/api/board/update")
+    fun updateBoard(
+        @Field("board_id") board_id: String,
+        @Field("category_id") category_id: String,
+        @Field("title") title: String,
+        @Field("contents") contents: String,
+        @Field("image") image: String?
+    )
+    : Call<Result.ResultBasic>
+
+    // 게시글 카테고리 목록
+    @GET("/api/board/categories")
+    fun getBoardCategories()
+    : Call<Result.ResultBoardCategories>
+
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"
 //        private const val CLIENT_ID = "네이버_개발자센터_아이디"

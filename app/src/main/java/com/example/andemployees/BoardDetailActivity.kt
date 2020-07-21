@@ -57,7 +57,33 @@ class BoardDetailActivity : AppCompatActivity() {
 
         // TODO 다이얼로그 띄워서 수정하기,삭제하기 실행(본인 글일 경우에만)
         findViewById<ImageView>(R.id.iv_board_detail_more).setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(this)
+            val items = arrayOf("수정하기", "삭제하기")
+            dialogBuilder.setItems(items) { _, which ->
+                when(which) {
+                    // 수정하기
+                    0 -> {
+                        val intent = Intent(this, BoardEditActivity::class.java)
+                        intent.putExtra("boardId", mBoardId)
+                        startActivity(intent)
+                    }
+                    // 삭제하기
+                    1 -> {
+                        val deleteDialogBuilder = AlertDialog.Builder(this)
+                        deleteDialogBuilder.setMessage(getString(R.string.alert_delete))
+                        deleteDialogBuilder.setPositiveButton("삭제") { _, _ ->
+                            deleteBoard(mBoardId)
+                        }
 
+                        deleteDialogBuilder.setNegativeButton("유지") { _, _ ->
+
+                        }
+                        deleteDialogBuilder.show()
+                    }
+                }
+            }
+
+            dialogBuilder.show()
         }
 
         val header = layoutInflater.inflate(R.layout.listview_board_header, null, false)
@@ -117,6 +143,12 @@ class BoardDetailActivity : AppCompatActivity() {
                 mInputMethodManager.hideSoftInputFromWindow(mBtnAddComment.windowToken, 0);
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getBoardDetail(mBoardId, mUserId)
     }
 
     private fun getBoardDetail (boardId: String, userId: String) {
@@ -206,7 +238,7 @@ class BoardDetailActivity : AppCompatActivity() {
     }
 
     private fun boardLike(boardId: String, userId: String) {
-        api.boardLike( boardId, userId).enqueue(object:
+        api.boardLike(boardId, userId).enqueue(object:
             Callback<Result.ResultBasic> {
             override fun onResponse(
                 call: Call<Result.ResultBasic>,
@@ -217,6 +249,27 @@ class BoardDetailActivity : AppCompatActivity() {
 
                 if(mCode == 200) {
 
+                }
+            }
+
+            override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun deleteBoard(boardId: String) {
+        api.deleteBoard(boardId).enqueue(object:
+            Callback<Result.ResultBasic> {
+            override fun onResponse(
+                call: Call<Result.ResultBasic>,
+                response: Response<Result.ResultBasic>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+
+                if(mCode == 200) {
+                    finish()
                 }
             }
 

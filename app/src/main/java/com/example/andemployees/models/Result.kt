@@ -2,10 +2,10 @@ package com.example.andemployees.models
 
 class Result {
     data class ResultUsers(
-            var id: String = "",
-            var account: String = "",
-            var password: String = "",
-            var is_valid: Int = 0
+        var id: String = "",
+        var account: String = "",
+        var password: String = "",
+        var is_valid: Int = 0
     )
 
     data class ResultBasic(
@@ -14,20 +14,20 @@ class Result {
     )
 
     data class ResultChangePassword(
-            var code: Int = 404,
-            var message: String = ""
+        var code: Int = 404,
+        var message: String = ""
     )
 
     data class ResultLogin(
-            var code: Int = 404,
-            var message: String = "",
-            var data: TableUser
+        var code: Int = 404,
+        var message: String = "",
+        var data: TableUser
     )
 
     data class ResultEmployees(
-            var code: Int = 404,
-            var message: String = "",
-            var data: List<TableEmployees>
+        var code: Int = 404,
+        var message: String = "",
+        var data: List<TableEmployees>
     )
 
     data class ResultEmployee(
@@ -58,6 +58,12 @@ class Result {
         var code: Int = 404,
         var message: String = "",
         var data: TableBoards
+    )
+
+    data class ResultBoardCategories(
+        var code: Int = 404,
+        var message: String = "",
+        var data: List<TableBoardCategories>
     )
 
     data class TableBoards(
@@ -139,5 +145,10 @@ class Result {
         var memo: String = "",
         var createdat: String = "",
         var updatedat: String = ""
+    )
+
+    data class TableBoardCategories(
+        var id: String = "",
+        var name: String = ""
     )
 }

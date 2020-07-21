@@ -36,4 +36,12 @@
     <string name="category_notice">6797f061-c997-11ea-9982-20cf305809b8</string>
     <string name="user_id_dummy">d204d659-c1e2-11ea-9982-20cf305809b8</string>
 
+    <string name="server_error">서버 통신에 에러가 발생하였습니다.</string>
+    <string name="alert_delete">삭제하시겠습니까</string>
+    <string name="add">등록</string>
+    <string name="update">수정</string>
+    <string name="hint_category">카테고리를 선택해주세요.</string>
+    <string name="hint_title">제목을 입력해주세요.</string>
+    <string name="hint_contents">내용을 입력해주세요.</string>
+
 </resources>
