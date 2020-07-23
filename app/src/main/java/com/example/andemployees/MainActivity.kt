@@ -52,6 +52,7 @@ class MainActivity : FragmentActivity() {
 
         })
 
+        // TODO 푸시알람 보내기 위한 디바이스토큰 받아오는 부분 - 로그인 화면으로 옮겨야함
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener {
                 if(!it.isSuccessful) {

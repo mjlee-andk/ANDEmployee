@@ -2,21 +2,18 @@ package com.example.andemployees
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.squareup.otto.Subscribe
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,9 +41,11 @@ class BoardDetailActivity : AppCompatActivity() {
     lateinit var commentCount: TextView
     lateinit var share: LinearLayout
     lateinit var likeContainer: LinearLayout
+    lateinit var mBoardDetailMore: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BusProvider.getInstance().register(this)
         setContentView(R.layout.activity_board_detail)
 
         val mIntent = intent
@@ -56,7 +55,8 @@ class BoardDetailActivity : AppCompatActivity() {
         mListView = findViewById(R.id.lv_board_detail_container)
 
         // TODO 다이얼로그 띄워서 수정하기,삭제하기 실행(본인 글일 경우에만)
-        findViewById<ImageView>(R.id.iv_board_detail_more).setOnClickListener {
+        mBoardDetailMore = findViewById(R.id.iv_board_detail_more)
+        mBoardDetailMore.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this)
             val items = arrayOf("수정하기", "삭제하기")
             dialogBuilder.setItems(items) { _, which ->
@@ -98,10 +98,6 @@ class BoardDetailActivity : AppCompatActivity() {
         commentCount = header.findViewById(R.id.tv_board_header_comment_count)
         share = header.findViewById(R.id.ll_board_header_share_container)
         likeContainer =  header.findViewById(R.id.ll_board_header_like_container)
-
-        if (mBoardId != null) {
-            getBoardDetail(mBoardId, mUserId)
-        }
 
         mInputComment = findViewById(R.id.et_board_detail_comment_input)
         mBtnAddComment = findViewById(R.id.btn_board_detail_add_comment)
@@ -147,8 +143,14 @@ class BoardDetailActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if(mBoardId != null) {
+            getBoardDetail(mBoardId, mUserId)
+        }
+    }
 
-        getBoardDetail(mBoardId, mUserId)
+    override fun onDestroy() {
+        super.onDestroy()
+        BusProvider.getInstance().unregister(this)
     }
 
     private fun getBoardDetail (boardId: String, userId: String) {
@@ -277,5 +279,11 @@ class BoardDetailActivity : AppCompatActivity() {
                 Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    @Subscribe
+    fun onEvent(event: BusEvent){
+        getBoardDetail(mBoardId, mUserId)
+        Log.d("First", event.strData)
     }
 }

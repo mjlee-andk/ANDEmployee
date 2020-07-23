@@ -174,6 +174,16 @@ public interface RetrofitAPI {
     )
     : Call<Result.ResultBasic>
 
+    // FCM 요청
+    @FormUrlEncoded
+    @POST("/fcm/send")
+    fun fcmSend(
+        @Field("token") token: String, // 디바이스 토큰
+        @Field("title") title: String,
+        @Field("contents") contents: String
+    )
+    : Call<Result.ResultBasic>
+
     companion object {
         private const val BASE_URL = "http://121.126.225.132:3000"
 //        private const val CLIENT_ID = "네이버_개발자센터_아이디"

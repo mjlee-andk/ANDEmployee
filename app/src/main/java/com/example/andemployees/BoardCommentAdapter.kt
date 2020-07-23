@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -113,7 +112,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                         commentEditText.setText(comment.comment)
                         commentEditText.setSelection(commentEditText.length())
                         editCommentDialogBuilder.setView(customLayout)
-                        editCommentDialogBuilder.setPositiveButton("수정") { dialogInterface, i ->
+                        editCommentDialogBuilder.setPositiveButton("수정") { _, _ ->
                             var inputComment = commentEditText.text
                             if(inputComment.isEmpty()) {
                                 Toast.makeText(context, context.getString(R.string.hint_contents), Toast.LENGTH_SHORT).show()
@@ -126,9 +125,9 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                                 InputMethodManager.HIDE_IMPLICIT_ONLY, 0
                             )
 
-                            notifyDataSetChanged()
+//                            notifyDataSetChanged()
                         }
-                        editCommentDialogBuilder.setNegativeButton("취소") { dialogInterface, i ->
+                        editCommentDialogBuilder.setNegativeButton("취소") { _, _ ->
 
                         }
                         editCommentDialogBuilder.show()
@@ -204,8 +203,8 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                 var mMessage = response.body()?.message
 
                 if(mCode == 200) {
-//                    notifyDataSetChanged()
-                    view.findViewById<TextView>(R.id.tv_board_comments_comment).text = comment
+//                    view.findViewById<TextView>(R.id.tv_board_comments_comment).text = comment
+                    BusProvider.getInstance().post(BusEvent())
                 }
             }
 
@@ -226,7 +225,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                 var mMessage = response.body()?.message
 
                 if(mCode == 200) {
-                    notifyDataSetChanged()
+                    BusProvider.getInstance().post(BusEvent())
                 }
             }
 

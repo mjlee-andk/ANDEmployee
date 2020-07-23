@@ -33,7 +33,7 @@
     <string name="hint_employees_search">검색할 이름을 입력해주세요.</string>
 
 
-    <string name="category_notice">6797f061-c997-11ea-9982-20cf305809b8</string>
+    <string name="category_id_notice">6797f061-c997-11ea-9982-20cf305809b8</string>
     <string name="user_id_dummy">d204d659-c1e2-11ea-9982-20cf305809b8</string>
 
     <string name="server_error">서버 통신에 에러가 발생하였습니다.</string>
