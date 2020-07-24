@@ -284,6 +284,6 @@ class BoardDetailActivity : AppCompatActivity() {
     @Subscribe
     fun onEvent(event: BusEvent){
         getBoardDetail(mBoardId, mUserId)
-        Log.d("First", event.strData)
+//        Log.d("First", event.strData)
     }
 }

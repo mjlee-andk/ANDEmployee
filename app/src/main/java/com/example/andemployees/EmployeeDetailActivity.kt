@@ -3,6 +3,7 @@ package com.example.andemployees
 import android.content.Intent
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -17,6 +18,7 @@ import com.example.andemployees.models.Result
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class EmployeeDetailActivity : AppCompatActivity() {
 
@@ -51,6 +53,26 @@ class EmployeeDetailActivity : AppCompatActivity() {
         val mEmployeeBirthdate = findViewById<TextView>(R.id.tv_employee_birthdate)
         val mEmployeeJoindate = findViewById<TextView>(R.id.tv_employee_joindate)
 
+        // TODO 전화 관련 권한 승인 처리 후 주석 풀것
+//        mEmployeePhoneNum.setOnClickListener {
+//            try {
+//                var phone = mEmployeePhoneNum.text.toString()
+//                if(phone.isNullOrEmpty()){
+//                    return@setOnClickListener
+//                }
+//                phone = phone.replace("-", "")
+//
+//                val intent = Intent(Intent.ACTION_CALL)
+//                intent.data = Uri.parse("tel:$phone")
+//                startActivity(intent)
+//                return@setOnClickListener
+//            }
+//            catch (e: Exception) {
+//                e.printStackTrace()
+//                return@setOnClickListener
+//            }
+//        }
+
         val api = RetrofitAPI.create()
         if (mEmployeeId != null) {
             api.getEmployee(mEmployeeId).enqueue(object: Callback<Result.ResultEmployee> {
@@ -74,7 +96,6 @@ class EmployeeDetailActivity : AppCompatActivity() {
                         mEmployeeJoindate.text = mData?.join_date
 
                         if(mData?.profile_img == null) {
-
                             Glide.with(this@EmployeeDetailActivity).load(getString(R.string.basic_profile_url)).into(mEmployeeProfile)
                         }
                         else {
