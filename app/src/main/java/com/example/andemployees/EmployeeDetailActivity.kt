@@ -1,26 +1,42 @@
 package com.example.andemployees
 
+import android.Manifest.permission.CALL_PHONE
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class EmployeeDetailActivity : AppCompatActivity() {
+
+    private val MY_PERMISSIONS_REQUEST_CALL_PHONE = 1000
+    val api = RetrofitAPI.create()
+
+    lateinit var mEmployeeName: TextView
+    lateinit var mEmployeeDepartment: TextView
+    lateinit var mEmployeePosition: TextView
+    lateinit var mEmployeeExtensionNum: TextView
+    lateinit var mEmployeePhoneNum: TextView
+    lateinit var mEmployeeBirthdate: TextView
+    lateinit var mEmployeeJoindate: TextView
+    lateinit var mEmployeeProfile: ImageView
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,85 +45,137 @@ class EmployeeDetailActivity : AppCompatActivity() {
 //        setSupportActionBar(findViewById(R.id.toolbar))
 
         val mIntent = intent
-        //TODO id값들 서버에서 받아온것으로 바꾸기
-        val mEmployeeId = mIntent.getStringExtra("employeeId")
-//        val mEmployeeId = "62cc7cb0-c1ff-11ea-9982-20cf305809b8"
+        //TODO user id값 로그인한 계정으로 바꿀것
+        val mEmployeeId = mIntent.getStringExtra("employeeId").toString()
         val mUserId = "d204d659-c1e2-11ea-9982-20cf305809b8";
 
-        findViewById<Button>(R.id.button_memo).setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val intent = Intent(this, MemoActivity::class.java)
             intent.putExtra("employeeId", mEmployeeId)
             intent.putExtra("userId", mUserId)
             startActivity(intent)
         }
 
-        val mEmployeeProfile = findViewById<ImageView>(R.id.iv_employee_profile)
+        mEmployeeProfile = findViewById(R.id.iv_employee_profile)
         mEmployeeProfile.background = ShapeDrawable(OvalShape())
         mEmployeeProfile.clipToOutline = true
 
-        val mEmployeeName = findViewById<TextView>(R.id.tv_employee_name)
-        val mEmployeeDepartment = findViewById<TextView>(R.id.tv_employee_department)
-        val mEmployeePosition = findViewById<TextView>(R.id.tv_employee_position)
-        val mEmployeeExtensionNum = findViewById<TextView>(R.id.tv_employee_extension_num)
-        val mEmployeePhoneNum = findViewById<TextView>(R.id.tv_employee_phone_num)
-        val mEmployeeBirthdate = findViewById<TextView>(R.id.tv_employee_birthdate)
-        val mEmployeeJoindate = findViewById<TextView>(R.id.tv_employee_joindate)
+        mEmployeeName = findViewById(R.id.tv_employee_name)
+        mEmployeeDepartment = findViewById(R.id.tv_employee_department)
+        mEmployeePosition = findViewById(R.id.tv_employee_position)
+        mEmployeeExtensionNum = findViewById(R.id.tv_employee_extension_num)
+        mEmployeePhoneNum = findViewById(R.id.tv_employee_phone_num)
+        mEmployeeBirthdate = findViewById(R.id.tv_employee_birthdate)
+        mEmployeeJoindate = findViewById(R.id.tv_employee_joindate)
 
-        // TODO 전화 관련 권한 승인 처리 후 주석 풀것
-//        mEmployeePhoneNum.setOnClickListener {
-//            try {
-//                var phone = mEmployeePhoneNum.text.toString()
-//                if(phone.isNullOrEmpty()){
-//                    return@setOnClickListener
-//                }
-//                phone = phone.replace("-", "")
-//
-//                val intent = Intent(Intent.ACTION_CALL)
-//                intent.data = Uri.parse("tel:$phone")
-//                startActivity(intent)
-//                return@setOnClickListener
-//            }
-//            catch (e: Exception) {
-//                e.printStackTrace()
-//                return@setOnClickListener
-//            }
-//        }
-
-        val api = RetrofitAPI.create()
         if (mEmployeeId != null) {
-            api.getEmployee(mEmployeeId).enqueue(object: Callback<Result.ResultEmployee> {
-                override fun onResponse(
-                    call: Call<Result.ResultEmployee>,
-                    response: Response<Result.ResultEmployee>
-                ) {
-                    var mCode = response.body()?.code
-                    var mMessage = response.body()?.message
-                    var mData = response.body()?.data
+            getEmployee(mEmployeeId)
+        }
+    }
 
-//                    Toast.makeText(this@EmployeeDetailActivity, mMessage, Toast.LENGTH_SHORT).show()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-                    if(mCode == 200) {
-                        mEmployeeName.text = mData?.name
-                        mEmployeeDepartment.text = mData?.department_name
-                        mEmployeePosition.text = mData?.position_name
-                        mEmployeeExtensionNum.text = mData?.extension_number
-                        mEmployeePhoneNum.text = mData?.phone
-                        mEmployeeBirthdate.text = mData?.birth
-                        mEmployeeJoindate.text = mData?.join_date
+        when(requestCode) {
+            MY_PERMISSIONS_REQUEST_CALL_PHONE -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "전화 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(this, "전화 권한을 허용해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
 
-                        if(mData?.profile_img == null) {
-                            Glide.with(this@EmployeeDetailActivity).load(getString(R.string.basic_profile_url)).into(mEmployeeProfile)
+    private fun getEmployee(employeeId: String) {
+        api.getEmployee(employeeId).enqueue(object: Callback<Result.ResultEmployee> {
+            override fun onResponse(
+                call: Call<Result.ResultEmployee>,
+                response: Response<Result.ResultEmployee>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+                var mData = response.body()?.data
+
+                if(mCode == 200) {
+                    mEmployeeName.text = mData?.name
+                    mEmployeeDepartment.text = mData?.department_name
+                    mEmployeePosition.text = mData?.position_name
+                    mEmployeeExtensionNum.text = mData?.extension_number
+                    mEmployeePhoneNum.text = mData?.phone
+                    mEmployeeBirthdate.text = mData?.birth
+                    mEmployeeJoindate.text = mData?.join_date
+
+                    // TODO 전화 관련 권한 승인 처리 후 주석 풀것
+                    mEmployeePhoneNum.setOnClickListener {
+                        try {
+                            val permissionCheck = ContextCompat.checkSelfPermission(this@EmployeeDetailActivity, CALL_PHONE)
+                            if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(this@EmployeeDetailActivity, arrayOf(CALL_PHONE), MY_PERMISSIONS_REQUEST_CALL_PHONE)
+                            }
+                            else {
+                                var phone = mEmployeePhoneNum.text.toString()
+                                if(phone.isNullOrEmpty()){
+                                    return@setOnClickListener
+                                }
+                                phone = phone.replace("-", "")
+
+                                val intent = Intent(Intent.ACTION_CALL)
+                                intent.data = Uri.parse("tel:$phone")
+                                startActivity(intent)
+                                return@setOnClickListener
+                            }
                         }
-                        else {
-                            Glide.with(this@EmployeeDetailActivity).load(mData?.profile_img).into(mEmployeeProfile)
+                        catch (e: Exception) {
+                            e.printStackTrace()
+                            return@setOnClickListener
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<Result.ResultEmployee>, t: Throwable) {
-                    Toast.makeText(this@EmployeeDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                    mEmployeeExtensionNum.setOnClickListener {
+                        try {
+                            val permissionCheck = ContextCompat.checkSelfPermission(this@EmployeeDetailActivity, CALL_PHONE)
+                            if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(this@EmployeeDetailActivity, arrayOf(CALL_PHONE), MY_PERMISSIONS_REQUEST_CALL_PHONE)
+                            }
+                            else {
+                                var extensionNum = mEmployeeExtensionNum.text.toString()
+                                if(extensionNum.isNullOrEmpty()){
+                                    return@setOnClickListener
+                                }
+
+                                extensionNum = "07046725$extensionNum"
+
+                                val intent = Intent(Intent.ACTION_CALL)
+                                intent.data = Uri.parse("tel:$extensionNum")
+                                startActivity(intent)
+                                return@setOnClickListener
+                            }
+                        }
+                        catch (e: Exception) {
+                            e.printStackTrace()
+                            return@setOnClickListener
+                        }
+                    }
+
+                    if(mData?.profile_img == null) {
+                        Glide.with(this@EmployeeDetailActivity).load(getString(R.string.basic_profile_url)).into(mEmployeeProfile)
+                    }
+                    else {
+                        Glide.with(this@EmployeeDetailActivity).load(mData?.profile_img).into(mEmployeeProfile)
+                    }
                 }
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<Result.ResultEmployee>, t: Throwable) {
+                Toast.makeText(this@EmployeeDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

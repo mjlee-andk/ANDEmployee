@@ -42,6 +42,7 @@ class BoardDetailActivity : AppCompatActivity() {
     lateinit var share: LinearLayout
     lateinit var likeContainer: LinearLayout
     lateinit var mBoardDetailMore: ImageView
+    lateinit var mBoardDetailBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,11 @@ class BoardDetailActivity : AppCompatActivity() {
         mUserId = getString(R.string.user_id_dummy);
 
         mListView = findViewById(R.id.lv_board_detail_container)
+
+        mBoardDetailBack = findViewById(R.id.btn_board_detail_back)
+        mBoardDetailBack.setOnClickListener {
+            finish()
+        }
 
         // TODO 다이얼로그 띄워서 수정하기,삭제하기 실행(본인 글일 경우에만)
         mBoardDetailMore = findViewById(R.id.iv_board_detail_more)

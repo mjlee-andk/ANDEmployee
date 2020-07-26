@@ -16,8 +16,8 @@
 
         <Button
             android:id="@+id/btn_employees_searchbar_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="5dp"
             android:layout_gravity="center_vertical"

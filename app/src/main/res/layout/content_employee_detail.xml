@@ -46,65 +46,6 @@
 
     </LinearLayout>
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_title_employee_num"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/iv_employee_profile"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:text="전화"/>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/ll_container_phone"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_num"-->
-<!--        android:background="@drawable/roundedtextviewbackground"-->
-<!--        android:padding="10dp"-->
-<!--        android:layout_marginTop="5dp">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_title_employee_phone"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="휴대전화"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_employee_phone_num"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="010-6376-2215"/>-->
-
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/ll_container_extension_number"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/ll_container_phone"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:background="@drawable/roundedtextviewbackground"-->
-<!--        android:padding="10dp"-->
-<!--        android:layout_marginTop="5dp">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_title_employee_extension_num"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="내선번호"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_employee_extension_num"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="129"/>-->
-
-<!--    </LinearLayout>-->
-
     <TextView
         android:id="@+id/tv_title_employee_phone"
         android:layout_width="wrap_content"
