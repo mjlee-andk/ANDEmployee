@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.andemployees.adapter.SearchAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -13,6 +14,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EmployeesActivity : AppCompatActivity() {
+
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
 
     lateinit var adapter: SearchAdapter
     lateinit var list: ArrayList<Result.TableEmployees>
@@ -23,14 +27,29 @@ class EmployeesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_employees)
 //        setSupportActionBar(findViewById(R.id.toolbar))
 
+        loadingDialog = LoadingDialog(this@EmployeesActivity)
+
         val mIntent = intent
         var mDepartmentId = mIntent.getStringExtra("departmentId")
         if(mDepartmentId == null) {
             mDepartmentId = ""
         }
 
-        val api = RetrofitAPI.create()
-        api.getEmployees("", "", mDepartmentId).enqueue(object: Callback<Result.ResultEmployees> {
+        getEmployees("", "", mDepartmentId)
+
+        findViewById<Button>(R.id.btn_employees_searchbar_back).setOnClickListener {
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
+    }
+
+    private fun getEmployees(search:String, divisionId:String, departmentId: String) {
+        loadingDialog.show()
+        api.getEmployees(search, divisionId, departmentId).enqueue(object: Callback<Result.ResultEmployees> {
             override fun onResponse(
                 call: Call<Result.ResultEmployees>,
                 response: Response<Result.ResultEmployees>
@@ -39,6 +58,7 @@ class EmployeesActivity : AppCompatActivity() {
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
 
+                loadingDialog.dismiss()
                 if(mCode == 200) {
 
                     /*위젯과 멤버변수 참조 획득*/
@@ -52,7 +72,10 @@ class EmployeesActivity : AppCompatActivity() {
                     arraylist = ArrayList<Result.TableEmployees>()
                     arraylist.addAll(list)
 
-                    adapter = SearchAdapter(this@EmployeesActivity, list);
+                    adapter = SearchAdapter(
+                        this@EmployeesActivity,
+                        list
+                    );
                     mListView.adapter = adapter
 
                     mEditTextSearch.addTextChangedListener(object: TextWatcher{
@@ -76,10 +99,6 @@ class EmployeesActivity : AppCompatActivity() {
 
                     })
 
-                    /*어댑터 등록*/
-//                    val mMyAdapter = mData?.let { MyAdapter(this@EmployeesActivity, it) }
-//                    mListView.adapter = mMyAdapter
-
                     mListView.onItemClickListener = AdapterView.OnItemClickListener{ parent, view, position, id ->
                         val selectedEmployee = parent.getItemAtPosition(position) as Result.TableEmployees
                         val intent = Intent(this@EmployeesActivity, EmployeeDetailActivity::class.java)
@@ -90,23 +109,20 @@ class EmployeesActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultEmployees>, t: Throwable) {
-                Toast.makeText(this@EmployeesActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@EmployeesActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
-
-        findViewById<Button>(R.id.btn_employees_searchbar_back).setOnClickListener {
-            finish()
-        }
     }
 
     // 검색을 수행하는 메소드
-    fun search(charText: String) {
+    private fun search(charText: String) {
 
         // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
         list.clear()
 
         // 문자 입력이 없을때는 모든 데이터를 보여준다.
-        if (charText.length == 0) {
+        if (charText.isEmpty()) {
             list.addAll(arraylist)
         } else {
             // 리스트의 모든 데이터를 검색한다.

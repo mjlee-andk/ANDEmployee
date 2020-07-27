@@ -7,33 +7,29 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : Activity() {
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_login)
+
+        loadingDialog = LoadingDialog(this@LoginActivity)
 
         val account = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
+//        val loading = findViewById<ProgressBar>(R.id.loading)
 
         login.setOnClickListener {
-
-            val intent = Intent(this, ChangePasswordActivity::class.java)
-            val intent2 = Intent(this, MainActivity::class.java)
-
             var mAccount = account.text.toString()
             var mPassword = password.text.toString()
 
@@ -42,39 +38,51 @@ class LoginActivity : Activity() {
                 return@setOnClickListener;
             }
 
-            val api = RetrofitAPI.create()
-            api.login(mAccount, mPassword).enqueue(object: Callback<com.example.andemployees.models.Result.ResultLogin> {
-                override fun onResponse(
-                        call: Call<com.example.andemployees.models.Result.ResultLogin>,
-                        response: Response<com.example.andemployees.models.Result.ResultLogin>
-                ) {
-                    var mCode = response.body()?.code
-                    var mMessage = response.body()?.message
-                    var mData = response.body()?.data
+            login(mAccount, mPassword)
+        }
+    }
 
-                    Toast.makeText(this@LoginActivity, mMessage, Toast.LENGTH_SHORT).show()
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
+    }
 
-                    if(mCode == 200) {
+    private fun login(account:String, password:String) {
+        loadingDialog.show()
+        api.login(account, password).enqueue(object: Callback<com.example.andemployees.models.Result.ResultLogin> {
+            override fun onResponse(
+                call: Call<com.example.andemployees.models.Result.ResultLogin>,
+                response: Response<com.example.andemployees.models.Result.ResultLogin>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+                var mData = response.body()?.data
 
-                        if(mData?.is_valid == 0) {
-                            intent.putExtra("userId", mData?.id)
-                            startActivity(intent)
-                            finish()
-                        }
+                loadingDialog.dismiss()
 
-                        else {
-                            intent2.putExtra("userId", mData?.id)
-                            startActivity(intent2)
-                            finish()
-                        }
+//                Toast.makeText(this@LoginActivity, mMessage, Toast.LENGTH_SHORT).show()
+
+                if(mCode == 200) {
+
+                    if(mData?.is_valid == 0) {
+                        Intent(this@LoginActivity, ChangePasswordActivity::class.java).putExtra("userId", mData?.id)
+                        startActivity(Intent(this@LoginActivity, ChangePasswordActivity::class.java))
+                        finish()
+                    }
+
+                    else {
+                        Intent(this@LoginActivity, MainActivity::class.java).putExtra("userId", mData?.id)
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
                     }
                 }
+            }
 
-                override fun onFailure(call: Call<com.example.andemployees.models.Result.ResultLogin>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+            override fun onFailure(call: Call<com.example.andemployees.models.Result.ResultLogin>, t: Throwable) {
+                loadingDialog.dismiss()
+                Toast.makeText(this@LoginActivity, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
 

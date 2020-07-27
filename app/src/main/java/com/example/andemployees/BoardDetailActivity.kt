@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.transition.Visibility
 import android.view.View
+import android.view.View.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.andemployees.adapter.BoardCommentAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import com.squareup.otto.Subscribe
@@ -23,7 +25,8 @@ class BoardDetailActivity : AppCompatActivity() {
     lateinit var adapter: BoardCommentAdapter
     lateinit var list: ArrayList<Result.TableBoardComments>
 
-    val api = RetrofitAPI.create()
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
 
     lateinit var mInputComment: EditText
     lateinit var mBtnAddComment: Button
@@ -49,8 +52,12 @@ class BoardDetailActivity : AppCompatActivity() {
         BusProvider.getInstance().register(this)
         setContentView(R.layout.activity_board_detail)
 
+        loadingDialog = LoadingDialog(this@BoardDetailActivity)
+
         val mIntent = intent
         mBoardId = mIntent.getStringExtra("boardId").toString()
+
+        //TODO userid 바꾸기
         mUserId = getString(R.string.user_id_dummy);
 
         mListView = findViewById(R.id.lv_board_detail_container)
@@ -58,38 +65,6 @@ class BoardDetailActivity : AppCompatActivity() {
         mBoardDetailBack = findViewById(R.id.btn_board_detail_back)
         mBoardDetailBack.setOnClickListener {
             finish()
-        }
-
-        // TODO 다이얼로그 띄워서 수정하기,삭제하기 실행(본인 글일 경우에만)
-        mBoardDetailMore = findViewById(R.id.iv_board_detail_more)
-        mBoardDetailMore.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(this)
-            val items = arrayOf("수정하기", "삭제하기")
-            dialogBuilder.setItems(items) { _, which ->
-                when(which) {
-                    // 수정하기
-                    0 -> {
-                        val intent = Intent(this, BoardEditActivity::class.java)
-                        intent.putExtra("boardId", mBoardId)
-                        startActivity(intent)
-                    }
-                    // 삭제하기
-                    1 -> {
-                        val deleteDialogBuilder = AlertDialog.Builder(this)
-                        deleteDialogBuilder.setMessage(getString(R.string.alert_delete))
-                        deleteDialogBuilder.setPositiveButton("삭제") { _, _ ->
-                            deleteBoard(mBoardId)
-                        }
-
-                        deleteDialogBuilder.setNegativeButton("유지") { _, _ ->
-
-                        }
-                        deleteDialogBuilder.show()
-                    }
-                }
-            }
-
-            dialogBuilder.show()
         }
 
         val header = layoutInflater.inflate(R.layout.listview_board_header, null, false)
@@ -157,9 +132,11 @@ class BoardDetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         BusProvider.getInstance().unregister(this)
+        loadingDialog.dismiss()
     }
 
     private fun getBoardDetail (boardId: String, userId: String) {
+        loadingDialog.show()
         api.getBoardDetail(boardId, userId).enqueue(object: Callback<Result.ResultBoard> {
             override fun onResponse(
                 call: Call<Result.ResultBoard>,
@@ -168,6 +145,8 @@ class BoardDetailActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
+
+                loadingDialog.dismiss()
 
                 if(mCode == 200) {
                     title.text = mData?.title
@@ -203,11 +182,53 @@ class BoardDetailActivity : AppCompatActivity() {
                         boardLike(mBoardId, mUserId)
                     }
 
+                    mBoardDetailMore = findViewById(R.id.iv_board_detail_more)
+                    if (mData != null) {
+                        mBoardDetailMore.visibility = INVISIBLE
+
+                        if(mUserId == mData.user_id){
+                            mBoardDetailMore.visibility = VISIBLE
+                            mBoardDetailMore.setOnClickListener {
+                                val dialogBuilder = AlertDialog.Builder(this@BoardDetailActivity)
+                                val items = arrayOf("수정하기", "삭제하기")
+                                dialogBuilder.setItems(items) { _, which ->
+                                    when(which) {
+                                        // 수정하기
+                                        0 -> {
+                                            val intent = Intent(this@BoardDetailActivity, BoardEditActivity::class.java)
+                                            intent.putExtra("boardId", mBoardId)
+                                            startActivity(intent)
+                                        }
+                                        // 삭제하기
+                                        1 -> {
+                                            val deleteDialogBuilder = AlertDialog.Builder(this@BoardDetailActivity)
+                                            deleteDialogBuilder.setMessage(getString(R.string.alert_delete))
+                                            deleteDialogBuilder.setPositiveButton("삭제") { _, _ ->
+                                                deleteBoard(mBoardId)
+                                            }
+
+                                            deleteDialogBuilder.setNegativeButton("유지") { _, _ ->
+
+                                            }
+                                            deleteDialogBuilder.show()
+                                        }
+                                    }
+                                }
+
+                                dialogBuilder.show()
+                            }
+                        }
+                    }
+
                     list = ArrayList()
                     if (mData != null) {
                         list.addAll(mData.comments)
                     }
-                    adapter = BoardCommentAdapter(this@BoardDetailActivity, list)
+                    adapter =
+                        BoardCommentAdapter(
+                            this@BoardDetailActivity,
+                            list
+                        )
                     mListView.adapter = adapter
                     adapter.notifyDataSetChanged()
 
@@ -219,12 +240,14 @@ class BoardDetailActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultBoard>, t: Throwable) {
-                Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardDetailActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun addComment(boardId: String, userId: String, comment: String) {
+        loadingDialog.show()
         api.addComment(boardId, userId, comment).enqueue(object: Callback<Result.ResultBasic> {
             override fun onResponse(
                 call: Call<Result.ResultBasic>,
@@ -233,6 +256,8 @@ class BoardDetailActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
+                loadingDialog.dismiss()
+
                 if(mCode == 200) {
                     mInputComment.text.clear()
                     getBoardDetail(boardId, userId)
@@ -240,12 +265,14 @@ class BoardDetailActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardDetailActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun boardLike(boardId: String, userId: String) {
+        loadingDialog.show()
         api.boardLike(boardId, userId).enqueue(object:
             Callback<Result.ResultBasic> {
             override fun onResponse(
@@ -255,18 +282,22 @@ class BoardDetailActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
+                loadingDialog.dismiss()
+
                 if(mCode == 200) {
 
                 }
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardDetailActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun deleteBoard(boardId: String) {
+        loadingDialog.show()
         api.deleteBoard(boardId).enqueue(object:
             Callback<Result.ResultBasic> {
             override fun onResponse(
@@ -276,13 +307,16 @@ class BoardDetailActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
+                loadingDialog.dismiss()
+
                 if(mCode == 200) {
                     finish()
                 }
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(this@BoardDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardDetailActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

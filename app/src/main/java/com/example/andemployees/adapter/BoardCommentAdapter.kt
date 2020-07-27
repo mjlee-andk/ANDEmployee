@@ -1,4 +1,4 @@
-package com.example.andemployees
+package com.example.andemployees.adapter
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.example.andemployees.BusEvent
+import com.example.andemployees.BusProvider
+import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -41,7 +44,8 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
 
         if(convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.listview_board_comments, null)
-            holder = ViewHolder()
+            holder =
+                ViewHolder()
 
             holder.boardCommentsDivision = view.findViewById(R.id.tv_board_comments_division)
             holder.boardCommentsDepartment = view.findViewById(R.id.tv_board_comments_department)
@@ -70,25 +74,29 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         holder.boardCommentsLikeCount?.text = comment.like_count.toString()
 
         holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
-        holder.boardCommentsLike.tag = R.drawable.icon_like
+        holder.boardCommentsLike.tag =
+            R.drawable.icon_like
 
         if(comment.like_clicked) {
             holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
-            holder.boardCommentsLike.tag = R.drawable.icon_like_selected
+            holder.boardCommentsLike.tag =
+                R.drawable.icon_like_selected
         }
 
         holder.boardCommentsLikeContainer?.setOnClickListener {
             // 좋아요 취소
             if(holder.boardCommentsLike.tag == R.drawable.icon_like_selected) {
                 holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
-                holder.boardCommentsLike.tag = R.drawable.icon_like
+                holder.boardCommentsLike.tag =
+                    R.drawable.icon_like
 //                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
                 holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
             }
             // 좋아요
             else {
                 holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
-                holder.boardCommentsLike.tag = R.drawable.icon_like_selected
+                holder.boardCommentsLike.tag =
+                    R.drawable.icon_like_selected
 //                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
                 holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
             }
@@ -204,7 +212,8 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
 
                 if(mCode == 200) {
 //                    view.findViewById<TextView>(R.id.tv_board_comments_comment).text = comment
-                    BusProvider.getInstance().post(BusEvent())
+                    BusProvider.getInstance()
+                        .post(BusEvent())
                 }
             }
 
@@ -225,7 +234,8 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                 var mMessage = response.body()?.message
 
                 if(mCode == 200) {
-                    BusProvider.getInstance().post(BusEvent())
+                    BusProvider.getInstance()
+                        .post(BusEvent())
                 }
             }
 

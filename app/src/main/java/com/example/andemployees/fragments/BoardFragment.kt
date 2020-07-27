@@ -1,4 +1,4 @@
-package com.example.andemployees
+package com.example.andemployees.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
+import com.example.andemployees.BoardDetailActivity
+import com.example.andemployees.BoardEditActivity
+import com.example.andemployees.LoadingDialog
+import com.example.andemployees.R
+import com.example.andemployees.adapter.BoardAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -30,6 +35,8 @@ class NoticeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var loadingDialog: LoadingDialog
+
     lateinit var adapter: BoardAdapter
     lateinit var list: ArrayList<Result.TableBoards>
 
@@ -47,6 +54,8 @@ class NoticeFragment : Fragment() {
 
         mCategoryId = ""
         mUserId = getString(R.string.user_id_dummy)
+
+        loadingDialog = context?.let { LoadingDialog(it) }!!
     }
 
     override fun onCreateView(
@@ -71,8 +80,14 @@ class NoticeFragment : Fragment() {
         getBoards(mCategoryId, mUserId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
+    }
+
     private fun getBoards(categoryId: String, userId: String) {
         // TODO 수정해야함
+        loadingDialog.show()
         api.getBoards( categoryId, userId ).enqueue(object: Callback<Result.ResultBoards> {
             override fun onResponse(
                 call: Call<Result.ResultBoards>,
@@ -81,6 +96,8 @@ class NoticeFragment : Fragment() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
+
+                loadingDialog.dismiss()
 
                 if(mCode == 200) {
 
@@ -91,10 +108,15 @@ class NoticeFragment : Fragment() {
                     if (mData != null) {
                         list.addAll(mData)
                     }
-                    adapter = context?.let { BoardAdapter(it, list) }!!
+                    adapter = context?.let {
+                        BoardAdapter(
+                            it,
+                            list
+                        )
+                    }!!
                     mListView.adapter = adapter
 
-                    mListView.setOnItemClickListener { adapterView, view, i, l ->
+                    mListView.setOnItemClickListener { _, _, i, _ ->
                         val selectedBoard = list[i]
                         val intent = Intent(activity, BoardDetailActivity::class.java)
                         intent.putExtra("boardId", selectedBoard.id)
@@ -104,7 +126,8 @@ class NoticeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<Result.ResultBoards>, t: Throwable) {
-                Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(activity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

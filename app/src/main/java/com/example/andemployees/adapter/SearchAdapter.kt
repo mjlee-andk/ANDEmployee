@@ -1,4 +1,4 @@
-package com.example.andemployees
+package com.example.andemployees.adapter
 
 import android.content.Context
 import android.graphics.drawable.ShapeDrawable
@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
+import com.example.andemployees.R
 import com.example.andemployees.models.Result
 
 class SearchAdapter(val context: Context, private val employees: ArrayList<Result.TableEmployees>) : BaseAdapter() {

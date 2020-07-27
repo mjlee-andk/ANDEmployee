@@ -1,4 +1,4 @@
-package com.example.andemployees
+package com.example.andemployees.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
+import com.example.andemployees.R
 import com.example.andemployees.models.Result
 
 class DepartmentAdapter(val context: Context, private val mDevisions: ArrayList<Result.TableDevisions>) : BaseExpandableListAdapter(){
@@ -28,7 +29,8 @@ class DepartmentAdapter(val context: Context, private val mDevisions: ArrayList<
 
         if(convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.listview_division, null)
-            holder = ViewHolder()
+            holder =
+                ViewHolder()
 
             holder.divisionName = view.findViewById(R.id.tv_division_name)
 
@@ -63,7 +65,8 @@ class DepartmentAdapter(val context: Context, private val mDevisions: ArrayList<
 
         if(convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.listview_department, null)
-            holder = ViewHolder()
+            holder =
+                ViewHolder()
 
             holder.departmentName = view.findViewById(R.id.tv_department_name)
 

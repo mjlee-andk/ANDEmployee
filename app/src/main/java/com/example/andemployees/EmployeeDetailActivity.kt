@@ -26,7 +26,8 @@ import retrofit2.Response
 class EmployeeDetailActivity : AppCompatActivity() {
 
     private val MY_PERMISSIONS_REQUEST_CALL_PHONE = 1000
-    val api = RetrofitAPI.create()
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
 
     lateinit var mEmployeeName: TextView
     lateinit var mEmployeeDepartment: TextView
@@ -37,12 +38,13 @@ class EmployeeDetailActivity : AppCompatActivity() {
     lateinit var mEmployeeJoindate: TextView
     lateinit var mEmployeeProfile: ImageView
 
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_employee_detail)
 //        setSupportActionBar(findViewById(R.id.toolbar))
+
+        loadingDialog = LoadingDialog(this@EmployeeDetailActivity)
 
         val mIntent = intent
         //TODO user id값 로그인한 계정으로 바꿀것
@@ -73,6 +75,11 @@ class EmployeeDetailActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -83,10 +90,10 @@ class EmployeeDetailActivity : AppCompatActivity() {
         when(requestCode) {
             MY_PERMISSIONS_REQUEST_CALL_PHONE -> {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "전화 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.permission_call_ok), Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(this, "전화 권한을 허용해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.permission_call_fail), Toast.LENGTH_SHORT).show()
                 }
                 return
             }
@@ -94,6 +101,7 @@ class EmployeeDetailActivity : AppCompatActivity() {
     }
 
     private fun getEmployee(employeeId: String) {
+        loadingDialog.show()
         api.getEmployee(employeeId).enqueue(object: Callback<Result.ResultEmployee> {
             override fun onResponse(
                 call: Call<Result.ResultEmployee>,
@@ -102,6 +110,8 @@ class EmployeeDetailActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
+
+                loadingDialog.dismiss()
 
                 if(mCode == 200) {
                     mEmployeeName.text = mData?.name
@@ -112,7 +122,6 @@ class EmployeeDetailActivity : AppCompatActivity() {
                     mEmployeeBirthdate.text = mData?.birth
                     mEmployeeJoindate.text = mData?.join_date
 
-                    // TODO 전화 관련 권한 승인 처리 후 주석 풀것
                     mEmployeePhoneNum.setOnClickListener {
                         try {
                             val permissionCheck = ContextCompat.checkSelfPermission(this@EmployeeDetailActivity, CALL_PHONE)
@@ -174,7 +183,8 @@ class EmployeeDetailActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultEmployee>, t: Throwable) {
-                Toast.makeText(this@EmployeeDetailActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@EmployeeDetailActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

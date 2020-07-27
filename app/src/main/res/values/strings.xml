@@ -44,4 +44,13 @@
     <string name="hint_title">제목을 입력해주세요.</string>
     <string name="hint_contents">내용을 입력해주세요.</string>
 
+
+    <string name="memo_add">메모가 추가 되었습니다.</string>
+    <string name="memo_update">메모가 수정되었습니다.</string>
+
+    <string name="permission_call_ok">전화 권한이 허용되었습니다.</string>
+    <string name="permission_call_fail">전화 권한을 허용해주세요.</string>
+
+
+
 </resources>

@@ -1,10 +1,11 @@
-package com.example.andemployees
+package com.example.andemployees.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -62,10 +63,12 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         holder.boardsDate?.text = board.createdat
 
         holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
-        holder.boardsLikeClicked?.tag = R.drawable.icon_like
+        holder.boardsLikeClicked?.tag =
+            R.drawable.icon_like
         if(board.like_clicked) {
             holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
-            holder.boardsLikeClicked?.tag = R.drawable.icon_like_selected
+            holder.boardsLikeClicked?.tag =
+                R.drawable.icon_like_selected
         }
 
         holder.boardsLikeClicked.setOnClickListener{
@@ -84,13 +87,15 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
                         // 좋아요 취소
                         if(holder.boardsLikeClicked?.tag == R.drawable.icon_like_selected) {
                             holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
-                            holder.boardsLikeClicked?.tag = R.drawable.icon_like
+                            holder.boardsLikeClicked?.tag =
+                                R.drawable.icon_like
                             holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() - 1).toString()
                         }
                         // 좋아요
                         else {
                             holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
-                            holder.boardsLikeClicked?.tag = R.drawable.icon_like_selected
+                            holder.boardsLikeClicked?.tag =
+                                R.drawable.icon_like_selected
                             holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() + 1).toString()
                         }
                     }

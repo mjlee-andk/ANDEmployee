@@ -12,7 +12,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class BoardEditActivity : AppCompatActivity() {
-    val api = RetrofitAPI.create()
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
 
     var mBoardId: String? = null
     lateinit var mUserId: String
@@ -26,12 +27,19 @@ class BoardEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_edit)
 
+        loadingDialog = LoadingDialog(this@BoardEditActivity)
+
         val mIntent = intent
         mBoardId = mIntent.getStringExtra("boardId")
         mUserId = getString(R.string.user_id_dummy);
 
         // 카테고리 목록 받아오기
         getCategory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
     }
 
     private fun setView() {
@@ -105,6 +113,7 @@ class BoardEditActivity : AppCompatActivity() {
     }
 
     private fun getCategory() {
+        loadingDialog.show()
         api.getBoardCategories().enqueue(object: Callback<Result.ResultBoardCategories> {
             override fun onResponse(
                 call: Call<Result.ResultBoardCategories>,
@@ -114,6 +123,7 @@ class BoardEditActivity : AppCompatActivity() {
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
 
+                loadingDialog.dismiss()
                 if(mCode == 200) {
                     if (mData != null) {
                         mCategories = ArrayList<Result.TableBoardCategories>()
@@ -127,12 +137,14 @@ class BoardEditActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultBoardCategories>, t: Throwable) {
+                loadingDialog.dismiss()
                 Toast.makeText(this@BoardEditActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun getBoardDetail (boardId: String, userId: String) {
+        loadingDialog.show()
         api.getBoardDetail(boardId, userId).enqueue(object: Callback<Result.ResultBoard> {
             override fun onResponse(
                 call: Call<Result.ResultBoard>,
@@ -141,6 +153,8 @@ class BoardEditActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
+
+                loadingDialog.dismiss()
 
                 if(mCode == 200) {
                     if (mData != null) {
@@ -152,12 +166,14 @@ class BoardEditActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result.ResultBoard>, t: Throwable) {
+                loadingDialog.dismiss()
                 Toast.makeText(this@BoardEditActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun addBoard(userId: String, categoryId: String, title: String, contents: String, image: String?) {
+        loadingDialog.show()
         api.addBoard(userId, categoryId, title, contents, image).enqueue(object: Callback<Result.ResultBasic> {
             override fun onResponse(
                 call: Call<Result.ResultBasic>,
@@ -166,18 +182,22 @@ class BoardEditActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
+                loadingDialog.dismiss()
+
                 if(mCode == 200) {
                     finish()
                 }
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(this@BoardEditActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardEditActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun updateBoard(boardId: String, categoryId: String, title: String, contents: String, image: String?) {
+        loadingDialog.show()
         api.updateBoard(boardId, categoryId, title, contents, image).enqueue(object: Callback<Result.ResultBasic> {
             override fun onResponse(
                 call: Call<Result.ResultBasic>,
@@ -186,13 +206,15 @@ class BoardEditActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
+                loadingDialog.dismiss()
                 if(mCode == 200) {
                     finish()
                 }
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(this@BoardEditActivity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(this@BoardEditActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

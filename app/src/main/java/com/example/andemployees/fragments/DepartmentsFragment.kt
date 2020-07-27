@@ -1,4 +1,4 @@
-package com.example.andemployees
+package com.example.andemployees.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ExpandableListView
-import android.widget.ListView
 import android.widget.Toast
+import com.example.andemployees.EmployeesActivity
+import com.example.andemployees.LoadingDialog
+import com.example.andemployees.R
+import com.example.andemployees.adapter.DepartmentAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
 import retrofit2.Call
@@ -31,6 +33,9 @@ class EmployeesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val api = RetrofitAPI.create()
+    private lateinit var loadingDialog: LoadingDialog
+
     lateinit var adapter: DepartmentAdapter
     lateinit var list: ArrayList<Result.TableDevisions>
 
@@ -40,6 +45,8 @@ class EmployeesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        loadingDialog = context?.let { LoadingDialog(it) }!!
     }
 
     override fun onCreateView(
@@ -47,8 +54,18 @@ class EmployeesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_departments, container, false)
+        getDepartments(view)
 
-        val api = RetrofitAPI.create()
+        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.dismiss()
+    }
+
+    private fun getDepartments(view: View){
+        loadingDialog.show()
         api.getDepartments().enqueue(object: Callback<Result.ResultDevisions> {
             override fun onResponse(
                 call: Call<Result.ResultDevisions>,
@@ -57,6 +74,8 @@ class EmployeesFragment : Fragment() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
                 var mData = response.body()?.data
+
+                loadingDialog.dismiss()
 
                 if(mCode == 200) {
 
@@ -67,7 +86,12 @@ class EmployeesFragment : Fragment() {
                     if (mData != null) {
                         list.addAll(mData)
                     }
-                    adapter = context?.let { DepartmentAdapter(it, list) }!!
+                    adapter = context?.let {
+                        DepartmentAdapter(
+                            it,
+                            list
+                        )
+                    }!!
                     mListView.setAdapter(adapter)
                     mListView.expandGroup(0)
                     mListView.expandGroup(1)
@@ -91,11 +115,10 @@ class EmployeesFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<Result.ResultDevisions>, t: Throwable) {
-                Toast.makeText(activity, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+                Toast.makeText(activity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
-
-        return view
     }
 
     companion object {
