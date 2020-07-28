@@ -13,7 +13,8 @@ public interface RetrofitAPI {
     @POST("/api/user/login")
     fun login(
             @Field("account") account: String,
-            @Field("password") password: String
+            @Field("password") password: String,
+            @Field("device_token") device_token: String?
     )
     : Call<Result.ResultLogin>
 
@@ -181,6 +182,15 @@ public interface RetrofitAPI {
         @Field("token") token: String, // 디바이스 토큰
         @Field("title") title: String,
         @Field("contents") contents: String
+    )
+    : Call<Result.ResultBasic>
+
+    // 메모 비밀번호 확인
+    @FormUrlEncoded
+    @POST("api/memo/confirmpassword")
+    fun confirmMemoPasssword(
+        @Field("user_id") user_id: String,
+        @Field("password") password: String
     )
     : Call<Result.ResultBasic>
 

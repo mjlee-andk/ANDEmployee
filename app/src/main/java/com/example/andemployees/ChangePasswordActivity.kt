@@ -1,15 +1,15 @@
 package com.example.andemployees
 
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,27 +22,33 @@ class ChangePasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_password)
 
+        Prefs.Builder()
+            .setContext(this)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
+
         loadingDialog = LoadingDialog(this@ChangePasswordActivity)
 
         val password = findViewById<EditText>(R.id.password)
-        val password_confirm = findViewById<EditText>(R.id.password_confirm)
-        val change_password = findViewById<Button>(R.id.change_password)
+        val passwordConfirm = findViewById<EditText>(R.id.password_confirm)
+        val changePassword = findViewById<Button>(R.id.change_password)
 //        val loading = findViewById<ProgressBar>(R.id.loading)
 
-        val mIntent = intent
-        val mUserId = mIntent.getStringExtra("userId")
+        val mUserId = Prefs.getString(getString(R.string.PREF_USER_ID), null)
 
-        change_password.setOnClickListener {
+        changePassword.setOnClickListener {
             var mPassword = password.text.toString()
-            var mPasswordConfirm = password_confirm.text.toString()
+            var mPasswordConfirm = passwordConfirm.text.toString()
 
             if(mPassword.isEmpty() || mPasswordConfirm.isEmpty()) {
-                Toast.makeText(this@ChangePasswordActivity, "비밀번호와 비밀번호 확인을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChangePasswordActivity, getString(R.string.hint_password_password_confirm), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener;
             }
 
             if(mPassword != mPasswordConfirm) {
-                Toast.makeText(this@ChangePasswordActivity, "비밀번호가 서로 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChangePasswordActivity, getString(R.string.inconsistency_password), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener;
             }
 
@@ -78,7 +84,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<Result.ResultChangePassword>, t: Throwable) {
                 loadingDialog.dismiss()
-                Toast.makeText(this@ChangePasswordActivity, "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChangePasswordActivity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -1,12 +1,12 @@
 package com.example.andemployees
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,8 +30,8 @@ class BoardEditActivity : AppCompatActivity() {
         loadingDialog = LoadingDialog(this@BoardEditActivity)
 
         val mIntent = intent
-        mBoardId = mIntent.getStringExtra("boardId")
-        mUserId = getString(R.string.user_id_dummy);
+        mBoardId = mIntent.getStringExtra(getString(R.string.BOARD_ID))
+        mUserId = Prefs.getString(getString(R.string.PREF_USER_ID), null)
 
         // 카테고리 목록 받아오기
         getCategory()
@@ -126,7 +126,7 @@ class BoardEditActivity : AppCompatActivity() {
                 loadingDialog.dismiss()
                 if(mCode == 200) {
                     if (mData != null) {
-                        mCategories = ArrayList<Result.TableBoardCategories>()
+                        mCategories = ArrayList()
                         mCategories.addAll(mData)
                         setView()
                     }

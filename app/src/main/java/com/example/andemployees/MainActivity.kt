@@ -24,8 +24,8 @@ class MainActivity : FragmentActivity() {
 
         tabs = findViewById(R.id.tabs)
         tabs.addTab(tabs.newTab().setText("부서 목록"))
-        tabs.addTab(tabs.newTab().setText("게시판"))
-        tabs.addTab(tabs.newTab().setText("탭 2"))
+        tabs.addTab(tabs.newTab().setText("공지사항"))
+        tabs.addTab(tabs.newTab().setText("자유게시판"))
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -57,19 +57,10 @@ class MainActivity : FragmentActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {
 
             }
-
         })
+    }
 
-        // TODO 푸시알람 보내기 위한 디바이스토큰 받아오는 부분 - 로그인 화면으로 옮겨야함
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener {
-                if(!it.isSuccessful) {
-                    Log.w("FCM Log", "getInstanceId failed", it.exception)
-                    return@addOnCompleteListener
-                }
-                val token = it.result?.token
-                Log.d("FCM Log", "FCM 토큰 $token")
-                Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
-            }
+    override fun onResume() {
+        super.onResume()
     }
 }

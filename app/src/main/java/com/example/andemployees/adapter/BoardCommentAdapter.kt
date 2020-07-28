@@ -3,6 +3,7 @@ package com.example.andemployees.adapter
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.andemployees.BusProvider
 import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,9 +24,6 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
 
     val api = RetrofitAPI.create()
     lateinit var view : View
-
-    // TODO mUserId 수정해야함
-    private val mUserId = context.getString(R.string.user_id_dummy)
 
     override fun getCount(): Int {
         return comments.size;
@@ -74,30 +73,35 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         holder.boardCommentsLikeCount?.text = comment.like_count.toString()
 
         holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
-        holder.boardCommentsLike.tag =
-            R.drawable.icon_like
+        holder.boardCommentsLike.tag = R.drawable.icon_like
 
         if(comment.like_clicked) {
             holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
-            holder.boardCommentsLike.tag =
-                R.drawable.icon_like_selected
+            holder.boardCommentsLike.tag = R.drawable.icon_like_selected
         }
 
         holder.boardCommentsLikeContainer?.setOnClickListener {
+            Prefs.Builder()
+                .setContext(context)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(context.packageName)
+                .setUseDefaultSharedPreference(true)
+                .build()
+
+            val mUserId = Prefs.getString(context.getString(R.string.PREF_USER_ID), null)
+
             // 좋아요 취소
             if(holder.boardCommentsLike.tag == R.drawable.icon_like_selected) {
                 holder.boardCommentsLike.setImageResource(R.drawable.icon_like)
-                holder.boardCommentsLike.tag =
-                    R.drawable.icon_like
-//                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
+                holder.boardCommentsLike.tag = R.drawable.icon_like
+
                 holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() - 1).toString()
             }
             // 좋아요
             else {
                 holder.boardCommentsLike.setImageResource(R.drawable.icon_like_selected)
-                holder.boardCommentsLike.tag =
-                    R.drawable.icon_like_selected
-//                holder.boardCommentsLikeCount?.text = "좋아요 " + (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
+                holder.boardCommentsLike.tag = R.drawable.icon_like_selected
+
                 holder.boardCommentsLikeCount?.text = (holder.boardCommentsLikeCount?.text.toString().toInt() + 1).toString()
             }
 
@@ -120,7 +124,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                         commentEditText.setText(comment.comment)
                         commentEditText.setSelection(commentEditText.length())
                         editCommentDialogBuilder.setView(customLayout)
-                        editCommentDialogBuilder.setPositiveButton("수정") { _, _ ->
+                        editCommentDialogBuilder.setPositiveButton(context.getString(R.string.update)) { _, _ ->
                             var inputComment = commentEditText.text
                             if(inputComment.isEmpty()) {
                                 Toast.makeText(context, context.getString(R.string.hint_contents), Toast.LENGTH_SHORT).show()
@@ -132,10 +136,8 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                             imm?.toggleSoftInput(
                                 InputMethodManager.HIDE_IMPLICIT_ONLY, 0
                             )
-
-//                            notifyDataSetChanged()
                         }
-                        editCommentDialogBuilder.setNegativeButton("취소") { _, _ ->
+                        editCommentDialogBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
 
                         }
                         editCommentDialogBuilder.show()
@@ -150,11 +152,11 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
                     1 -> {
                         val deleteDialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
                         deleteDialogBuilder.setMessage(context.getString(R.string.alert_delete))
-                        deleteDialogBuilder.setPositiveButton("삭제") { _, _ ->
+                        deleteDialogBuilder.setPositiveButton(context.getString(R.string.delete)) { _, _ ->
                             deleteComment(comment.id)
                         }
 
-                        deleteDialogBuilder.setNegativeButton("유지") { _, _ ->
+                        deleteDialogBuilder.setNegativeButton(context.getString(R.string.keep)) { _, _ ->
 
                         }
                         deleteDialogBuilder.show()
@@ -196,7 +198,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             }
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
     }

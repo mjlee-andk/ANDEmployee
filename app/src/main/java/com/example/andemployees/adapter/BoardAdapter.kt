@@ -1,18 +1,23 @@
 package com.example.andemployees.adapter
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.andemployees.LoadingDialog
 import com.example.andemployees.R
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class BoardAdapter(val context: Context, private val boards: ArrayList<Result.TableBoards>) : BaseAdapter() {
+
+    val api = RetrofitAPI.create()
 
     override fun getCount(): Int {
         return boards.size;
@@ -43,7 +48,7 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
             holder.boardsCommentCount = view.findViewById(R.id.tv_board_comment_count)
             holder.boardsDate = view.findViewById(R.id.tv_board_date)
 
-            holder.boardsLikeClicked = view.findViewById(R.id.iv_board_like)
+            holder.boardsLike = view.findViewById(R.id.iv_board_like)
 
             view.tag = holder
         } else {
@@ -62,49 +67,42 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         holder.boardsCommentCount?.text = board.comment_count.toString()
         holder.boardsDate?.text = board.createdat
 
-        holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
-        holder.boardsLikeClicked?.tag =
-            R.drawable.icon_like
+        // 게시글 좋아요 클릭시 이미지 변경
+        holder.boardsLike?.setImageResource(R.drawable.icon_like)
+        holder.boardsLike?.tag = R.drawable.icon_like
+
         if(board.like_clicked) {
-            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
-            holder.boardsLikeClicked?.tag =
-                R.drawable.icon_like_selected
+            holder.boardsLike?.setImageResource(R.drawable.icon_like_selected)
+            holder.boardsLike?.tag = R.drawable.icon_like_selected
         }
 
-        holder.boardsLikeClicked.setOnClickListener{
-            val api = RetrofitAPI.create()
-            // TODO 수정해야함
-            api.boardLike( board.id, context.getString(R.string.user_id_dummy) ).enqueue(object:
-                Callback<Result.ResultBasic> {
-                override fun onResponse(
-                    call: Call<Result.ResultBasic>,
-                    response: Response<Result.ResultBasic>
-                ) {
-                    var mCode = response.body()?.code
-                    var mMessage = response.body()?.message
+        // 게시글 좋아요 클릭시 이미지 변경
+        holder.boardsLike.setOnClickListener{
+            Prefs.Builder()
+                .setContext(context)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(context.packageName)
+                .setUseDefaultSharedPreference(true)
+                .build()
 
-                    if(mCode == 200) {
-                        // 좋아요 취소
-                        if(holder.boardsLikeClicked?.tag == R.drawable.icon_like_selected) {
-                            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like)
-                            holder.boardsLikeClicked?.tag =
-                                R.drawable.icon_like
-                            holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() - 1).toString()
-                        }
-                        // 좋아요
-                        else {
-                            holder.boardsLikeClicked?.setImageResource(R.drawable.icon_like_selected)
-                            holder.boardsLikeClicked?.tag =
-                                R.drawable.icon_like_selected
-                            holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() + 1).toString()
-                        }
-                    }
-                }
+            val mUserId = Prefs.getString(context.getString(R.string.PREF_USER_ID), null)
 
-                override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
-                    Toast.makeText(context, "서버 통신에 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
+            // 좋아요 취소
+            if(holder.boardsLike.tag == R.drawable.icon_like_selected) {
+                holder.boardsLike.setImageResource(R.drawable.icon_like)
+                holder.boardsLike.tag = R.drawable.icon_like
+
+                holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() - 1).toString()
+            }
+            // 좋아요
+            else {
+                holder.boardsLike.setImageResource(R.drawable.icon_like_selected)
+                holder.boardsLike.tag = R.drawable.icon_like_selected
+
+                holder.boardsLikeCount?.text = (holder.boardsLikeCount?.text.toString().toInt() + 1).toString()
+            }
+
+            boardLike(board.id, mUserId)
         }
 
         return view
@@ -119,6 +117,32 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
         var boardsLikeCount : TextView? = null
         var boardsCommentCount : TextView? = null
         var boardsDate : TextView? = null
-        lateinit var boardsLikeClicked : ImageView
+        lateinit var boardsLike : ImageView
+    }
+
+    private fun boardLike (boardId: String, userId: String) {
+        var loadingDialog = LoadingDialog(context)
+        loadingDialog.show()
+        api.boardLike( boardId, userId ).enqueue(object:
+            Callback<Result.ResultBasic> {
+            override fun onResponse(
+                call: Call<Result.ResultBasic>,
+                response: Response<Result.ResultBasic>
+            ) {
+                var mCode = response.body()?.code
+                var mMessage = response.body()?.message
+
+                loadingDialog.dismiss()
+
+                if(mCode == 200) {
+
+                }
+            }
+
+            override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
+                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
+            }
+        })
     }
 }

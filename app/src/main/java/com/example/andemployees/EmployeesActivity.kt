@@ -30,7 +30,7 @@ class EmployeesActivity : AppCompatActivity() {
         loadingDialog = LoadingDialog(this@EmployeesActivity)
 
         val mIntent = intent
-        var mDepartmentId = mIntent.getStringExtra("departmentId")
+        var mDepartmentId = mIntent.getStringExtra(getString(R.string.DEPARTMENT_ID))
         if(mDepartmentId == null) {
             mDepartmentId = ""
         }
@@ -65,11 +65,11 @@ class EmployeesActivity : AppCompatActivity() {
                     val mEditTextSearch = findViewById<EditText>(R.id.et_employees_search)
                     val mListView = findViewById<ListView>(R.id.listView)
 
-                    list = ArrayList<Result.TableEmployees>()
+                    list = ArrayList()
                     if (mData != null) {
                         list.addAll(mData)
                     }
-                    arraylist = ArrayList<Result.TableEmployees>()
+                    arraylist = ArrayList()
                     arraylist.addAll(list)
 
                     adapter = SearchAdapter(
@@ -99,10 +99,10 @@ class EmployeesActivity : AppCompatActivity() {
 
                     })
 
-                    mListView.onItemClickListener = AdapterView.OnItemClickListener{ parent, view, position, id ->
+                    mListView.onItemClickListener = AdapterView.OnItemClickListener{ parent, _, position, _ ->
                         val selectedEmployee = parent.getItemAtPosition(position) as Result.TableEmployees
                         val intent = Intent(this@EmployeesActivity, EmployeeDetailActivity::class.java)
-                        intent.putExtra("employeeId", selectedEmployee.id)
+                        intent.putExtra(getString(R.string.EMPLOYEE_ID), selectedEmployee.id)
                         startActivity(intent)
                     }
                 }
@@ -117,7 +117,6 @@ class EmployeesActivity : AppCompatActivity() {
 
     // 검색을 수행하는 메소드
     private fun search(charText: String) {
-
         // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
         list.clear()
 
@@ -130,7 +129,7 @@ class EmployeesActivity : AppCompatActivity() {
                 // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
                 if ( arraylist[i].name.contains(charText)) {
                     // 검색된 데이터를 리스트에 추가한다.
-                    list.add(arraylist.get(i))
+                    list.add(arraylist[i])
                 }
             }
         }

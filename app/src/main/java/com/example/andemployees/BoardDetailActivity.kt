@@ -1,11 +1,11 @@
 package com.example.andemployees
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.transition.Visibility
 import android.view.View
 import android.view.View.*
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.andemployees.adapter.BoardCommentAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import com.squareup.otto.Subscribe
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,13 +53,18 @@ class BoardDetailActivity : AppCompatActivity() {
         BusProvider.getInstance().register(this)
         setContentView(R.layout.activity_board_detail)
 
+        Prefs.Builder()
+            .setContext(this)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
+
         loadingDialog = LoadingDialog(this@BoardDetailActivity)
 
         val mIntent = intent
-        mBoardId = mIntent.getStringExtra("boardId").toString()
-
-        //TODO userid 바꾸기
-        mUserId = getString(R.string.user_id_dummy);
+        mBoardId = mIntent.getStringExtra(getString(R.string.BOARD_ID)).toString()
+        mUserId = Prefs.getString(getString(R.string.PREF_USER_ID), null)
 
         mListView = findViewById(R.id.lv_board_detail_container)
 
@@ -111,7 +117,7 @@ class BoardDetailActivity : AppCompatActivity() {
             val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             if(inputText.isEmpty()) {
-                Toast.makeText(this@BoardDetailActivity, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@BoardDetailActivity, getString(R.string.hint_comment), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -196,7 +202,7 @@ class BoardDetailActivity : AppCompatActivity() {
                                         // 수정하기
                                         0 -> {
                                             val intent = Intent(this@BoardDetailActivity, BoardEditActivity::class.java)
-                                            intent.putExtra("boardId", mBoardId)
+                                            intent.putExtra(getString(R.string.BOARD_ID), mBoardId)
                                             startActivity(intent)
                                         }
                                         // 삭제하기
@@ -321,9 +327,9 @@ class BoardDetailActivity : AppCompatActivity() {
         })
     }
 
+    // 댓글 등록 후 갱신을 위한 이벤트 버스
     @Subscribe
     fun onEvent(event: BusEvent){
         getBoardDetail(mBoardId, mUserId)
-//        Log.d("First", event.strData)
     }
 }

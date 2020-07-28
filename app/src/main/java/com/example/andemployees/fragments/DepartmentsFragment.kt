@@ -103,10 +103,10 @@ class EmployeesFragment : Fragment() {
 
                     }
 
-                    mListView.setOnChildClickListener { parent, view, groupPosition, childPostion, id ->
+                    mListView.setOnChildClickListener { _, _, groupPosition, childPostion, id ->
                         val selectedDepartment = list[groupPosition].departments[childPostion]
                         val intent = Intent(activity, EmployeesActivity::class.java)
-                        intent.putExtra("departmentId", selectedDepartment.id)
+                        intent.putExtra(getString(R.string.DEPARTMENT_ID), selectedDepartment.id)
                         startActivity(intent)
 
                         return@setOnChildClickListener false
@@ -119,25 +119,5 @@ class EmployeesFragment : Fragment() {
                 Toast.makeText(activity, getString(R.string.server_error), Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EmployeesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

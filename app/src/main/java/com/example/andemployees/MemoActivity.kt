@@ -1,5 +1,6 @@
 package com.example.andemployees
 
+import android.content.ContextWrapper
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -7,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,12 +25,18 @@ class MemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memo)
 //        setSupportActionBar(findViewById(R.id.toolbar))
+        Prefs.Builder()
+            .setContext(this)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
 
         loadingDialog = LoadingDialog(this@MemoActivity)
 
         val mIntent = intent
-        val mUserId = mIntent.getStringExtra("userId")
-        val mEmployeeId = mIntent.getStringExtra("employeeId")
+        val mUserId = Prefs.getString(getString(R.string.PREF_USER_ID), null)
+        val mEmployeeId = mIntent.getStringExtra(getString(R.string.EMPLOYEE_ID))
 
         mMemoText = findViewById(R.id.et_memo)
 

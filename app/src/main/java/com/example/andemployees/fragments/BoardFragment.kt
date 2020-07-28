@@ -1,21 +1,21 @@
 package com.example.andemployees.fragments
 
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.example.andemployees.BoardDetailActivity
-import com.example.andemployees.BoardEditActivity
 import com.example.andemployees.LoadingDialog
 import com.example.andemployees.R
 import com.example.andemployees.adapter.BoardAdapter
 import com.example.andemployees.api.RetrofitAPI
 import com.example.andemployees.models.Result
+import com.pixplicity.easyprefs.library.Prefs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +43,7 @@ class NoticeFragment : Fragment() {
     lateinit var mCategoryId: String
     lateinit var mUserId: String
 
-    val api = RetrofitAPI.create()
+    private val api = RetrofitAPI.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +52,15 @@ class NoticeFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        Prefs.Builder()
+            .setContext(context)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(context?.packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
+
         mCategoryId = ""
-        mUserId = getString(R.string.user_id_dummy)
+        mUserId = Prefs.getString(getString(R.string.PREF_USER_ID), null)
 
         loadingDialog = context?.let { LoadingDialog(it) }!!
     }
@@ -64,11 +71,6 @@ class NoticeFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_board, container, false)
 
-        // TODO 임시버튼이므로 삭제해야함 게시글 등록 테스트를 위해 만듬
-        view.findViewById<Button>(R.id.btn_board_add).setOnClickListener {
-            val intent = Intent(activity, BoardEditActivity::class.java)
-            startActivity(intent)
-        }
         getBoards(mCategoryId, mUserId)
 
         return view
@@ -76,7 +78,6 @@ class NoticeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         getBoards(mCategoryId, mUserId)
     }
 
@@ -119,7 +120,7 @@ class NoticeFragment : Fragment() {
                     mListView.setOnItemClickListener { _, _, i, _ ->
                         val selectedBoard = list[i]
                         val intent = Intent(activity, BoardDetailActivity::class.java)
-                        intent.putExtra("boardId", selectedBoard.id)
+                        intent.putExtra(getString(R.string.BOARD_ID), selectedBoard.id)
                         startActivity(intent)
                     }
                 }
