@@ -45,7 +45,7 @@ class MemoActivity : AppCompatActivity() {
             getMemo(mUserId, mEmployeeId)
         }
 
-        findViewById<Button>(R.id.btn_savememo).setOnClickListener{
+        findViewById<Button>(R.id.btn_memo_save).setOnClickListener{
             // memo_id 있으면 /api/memo/update
             if(mMemoId != "") {
                 updateMemo()
@@ -56,6 +56,10 @@ class MemoActivity : AppCompatActivity() {
                     addMemo(mUserId, mEmployeeId)
                 }
             }
+        }
+
+        findViewById<Button>(R.id.btn_memo_cancel).setOnClickListener {
+            finish()
         }
     }
 

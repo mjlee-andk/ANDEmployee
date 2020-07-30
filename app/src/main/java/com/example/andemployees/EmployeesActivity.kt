@@ -37,7 +37,7 @@ class EmployeesActivity : AppCompatActivity() {
 
         getEmployees("", "", mDepartmentId)
 
-        findViewById<Button>(R.id.btn_employees_searchbar_back).setOnClickListener {
+        findViewById<Button>(R.id.btn_employees_back).setOnClickListener {
             finish()
         }
     }
@@ -63,7 +63,7 @@ class EmployeesActivity : AppCompatActivity() {
 
                     /*위젯과 멤버변수 참조 획득*/
                     val mEditTextSearch = findViewById<EditText>(R.id.et_employees_search)
-                    val mListView = findViewById<ListView>(R.id.listView)
+                    val mListView = findViewById<ListView>(R.id.lv_employees)
 
                     list = ArrayList()
                     if (mData != null) {

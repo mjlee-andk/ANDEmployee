@@ -121,8 +121,8 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
     }
 
     private fun boardLike (boardId: String, userId: String) {
-        var loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+//        var loadingDialog = LoadingDialog(context)
+//        loadingDialog.show()
         api.boardLike( boardId, userId ).enqueue(object:
             Callback<Result.ResultBasic> {
             override fun onResponse(
@@ -132,7 +132,7 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
-                loadingDialog.dismiss()
+//                loadingDialog.dismiss()
 
                 if(mCode == 200) {
 
@@ -141,7 +141,7 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
 
             override fun onFailure(call: Call<Result.ResultBasic>, t: Throwable) {
                 Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show()
-                loadingDialog.dismiss()
+//                loadingDialog.dismiss()
             }
         })
     }

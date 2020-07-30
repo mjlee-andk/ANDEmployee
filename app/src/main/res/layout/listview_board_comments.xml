@@ -24,7 +24,9 @@
                 android:layout_height="wrap_content"
                 android:text="ADK"
                 android:textSize="15sp"
-                android:textColor="@color/colorBoardPreview"/>
+                android:layout_marginRight="5dp"
+                android:textColor="@color/colorBoardPreview"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_board_comments_department"
@@ -32,15 +34,17 @@
                 android:layout_height="wrap_content"
                 android:text="부설연구소"
                 android:textSize="15sp"
-                android:textColor="@color/colorBoardPreview"/>
+                android:layout_marginRight="5dp"
+                android:textColor="@color/colorBoardPreview"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_board_comments_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="mjlee@andk.co.kr"
+                android:text="이민재"
                 android:textSize="15sp"
-                android:textColor="@color/colorBoardCommentID"/>
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
 
@@ -48,8 +52,9 @@
             android:id="@+id/tv_board_comments_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="댓글 내용"
-            android:textSize="23sp"
+            android:textSize="18sp"
             android:textColor="@color/colorBlack"/>
     </LinearLayout>
     
@@ -64,19 +69,18 @@
         <TextView
             android:id="@+id/tv_board_comments_date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="3"
             android:text="날짜"/>
 
         <LinearLayout
             android:id="@+id/ll_board_comments_like_container"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_weight="8">
+            android:layout_weight="6">
 
             <ImageView
                 android:id="@+id/iv_board_comments_like"
@@ -88,18 +92,30 @@
             <TextView
                 android:id="@+id/tv_board_comments_like_count"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
                 android:text="좋아요 2"/>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_board_comments_more"
+        <Button
+            android:id="@+id/btn_board_comments_more"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@drawable/icon_more"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="2"
+            android:text="@string/more">
+        </Button>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_board_comments_more"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/icon_more"/>-->
 
     </LinearLayout>
 

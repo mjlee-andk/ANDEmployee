@@ -7,15 +7,17 @@
 
     <EditText
         android:id="@+id/et_memo"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_margin="20dp"
-        android:padding="3dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="15dp"
         android:inputType="textMultiLine|textNoSuggestions"
         android:cursorVisible="true"
-        android:gravity="top"
-        android:background="@drawable/roundedtextviewbackground"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

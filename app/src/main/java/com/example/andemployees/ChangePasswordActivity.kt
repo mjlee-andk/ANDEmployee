@@ -73,7 +73,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                 var mCode = response.body()?.code
                 var mMessage = response.body()?.message
 
-//                Toast.makeText(this@ChangePasswordActivity, mMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChangePasswordActivity, getString(R.string.change_password_ok), Toast.LENGTH_SHORT).show()
                 loadingDialog.dismiss()
 
                 if(mCode == 200) {

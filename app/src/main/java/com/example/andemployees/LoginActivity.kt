@@ -85,20 +85,18 @@ class LoginActivity : Activity() {
 
                             // 첫 로그인 시 비밀번호 변경 화면으로 이동
                             if(mData?.is_valid == 0) {
-                                Intent(this@LoginActivity, ChangePasswordActivity::class.java)
                                 startActivity(Intent(this@LoginActivity, ChangePasswordActivity::class.java))
                                 finish()
                             }
 
                             // 메인 화면으로 이동
                             else {
-                                Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finish()
                             }
                         }
                         else {
-                            Toast.makeText(this@LoginActivity, getString(R.string.check_password), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, mMessage, Toast.LENGTH_SHORT).show()
                         }
                     }
 

@@ -54,7 +54,7 @@ class BoardEditActivity : AppCompatActivity() {
             val categoryDialogBuilder = AlertDialog.Builder(this)
             categoryDialogBuilder.setTitle(getString(R.string.hint_category))
 
-            categoryNames = ArrayList<String>()
+            categoryNames = ArrayList()
             for(i in mCategories){
                 categoryNames.add(i.name)
             }
@@ -101,6 +101,11 @@ class BoardEditActivity : AppCompatActivity() {
             else {
                 updateBoard(mBoardId!!, categoryId, title, contents, null)
             }
+        }
+
+        val btnCancel = findViewById<Button>(R.id.btn_board_edit_cancel)
+        btnCancel.setOnClickListener {
+            finish()
         }
 
         if(mBoardId.isNullOrEmpty() || mBoardId == "") {

@@ -1,15 +1,12 @@
 package com.example.andemployees
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.example.andemployees.fragments.AnonymousFragment
-import com.example.andemployees.fragments.EmployeesFragment
-import com.example.andemployees.fragments.NoticeFragment
+import com.example.andemployees.fragments.FreeBoardFragment
+import com.example.andemployees.fragments.DepartmentsFragment
+import com.example.andemployees.fragments.BoardFragment
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.iid.FirebaseInstanceId
 
 class MainActivity : FragmentActivity() {
     lateinit var tabs: TabLayout;
@@ -19,13 +16,13 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction().add(R.id.container,
-            EmployeesFragment()
+            DepartmentsFragment()
         ).commit()
 
         tabs = findViewById(R.id.tabs)
-        tabs.addTab(tabs.newTab().setText("부서 목록"))
-        tabs.addTab(tabs.newTab().setText("공지사항"))
-        tabs.addTab(tabs.newTab().setText("자유게시판"))
+        tabs.addTab(tabs.newTab().setText(getString(R.string.tab_title_departments)))
+        tabs.addTab(tabs.newTab().setText(getString(R.string.tab_title_notice)))
+        tabs.addTab(tabs.newTab().setText(getString(R.string.tab_title_freeboard)))
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -34,15 +31,15 @@ class MainActivity : FragmentActivity() {
                 when (position) {
                     0 -> {
                         selected =
-                            EmployeesFragment()
+                            DepartmentsFragment()
                     }
                     1 -> {
                         selected =
-                            NoticeFragment()
+                            BoardFragment()
                     }
                     2 -> {
                         selected =
-                            AnonymousFragment()
+                            FreeBoardFragment()
                     }
                 }
                 if (selected != null) {

@@ -7,50 +7,21 @@
     android:background="@color/colorWhite"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
-        android:id="@+id/ll_employees_searchbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/btn_employees_searchbar_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/back">
-        </Button>
-
-        <EditText
-            android:id="@+id/et_employees_search"
-            android:theme="@style/EditTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_employees_search"
-            android:background="@null"
-            android:padding="15dp"/>
-
-    </LinearLayout>
-
     <View
-        android:id="@+id/v_line"
+        android:id="@+id/v_employees_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ll_employees_searchbar"
-        android:layout_marginTop="1dp"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorView"/>
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/lv_employees"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorWhite"
         android:dividerHeight="0px"
         android:divider="@color/colorWhite"
-        app:layout_constraintTop_toBottomOf="@+id/v_line"
+        app:layout_constraintTop_toBottomOf="@+id/v_employees_line"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="5dp"/>
 

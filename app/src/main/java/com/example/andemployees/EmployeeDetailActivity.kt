@@ -188,6 +188,11 @@ class EmployeeDetailActivity : AppCompatActivity() {
                     }
                     else {
                         Glide.with(this@EmployeeDetailActivity).load(mData?.profile_img).into(mEmployeeProfile)
+                        mEmployeeProfile.setOnClickListener{
+                            val intent = Intent(this@EmployeeDetailActivity, ImageDetailActivity::class.java)
+                            intent.putExtra(getString(R.string.PROFILE_URL), mData?.profile_img)
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -214,15 +219,16 @@ class EmployeeDetailActivity : AppCompatActivity() {
                 loadingDialog.dismiss()
 
                 if(mCode == 200) {
-                    // 메모 있으면 비밀번호 입력 다이얼로그
-                    if(mData?.id != null) {
-                        confirmMemoPassword(userId, employeeId)
-                    }
                     // 메모 없으면 바로 화면 띄우기
-                    else {
+                    if(mData?.id.isNullOrEmpty()) {
                         val intent = Intent(this@EmployeeDetailActivity, MemoActivity::class.java)
                         intent.putExtra(getString(R.string.EMPLOYEE_ID), employeeId)
                         startActivity(intent)
+
+                    }
+                    // 메모 있으면 비밀번호 입력 다이얼로그
+                    else {
+                        confirmMemoPassword(userId, employeeId)
                     }
                 }
             }

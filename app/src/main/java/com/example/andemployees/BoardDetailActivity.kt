@@ -45,7 +45,8 @@ class BoardDetailActivity : AppCompatActivity() {
     lateinit var commentCount: TextView
     lateinit var share: LinearLayout
     lateinit var likeContainer: LinearLayout
-    lateinit var mBoardDetailMore: ImageView
+//    lateinit var mBoardDetailMore: ImageView
+    lateinit var mBoardDetailMore: Button
     lateinit var mBoardDetailBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,7 +189,7 @@ class BoardDetailActivity : AppCompatActivity() {
                         boardLike(mBoardId, mUserId)
                     }
 
-                    mBoardDetailMore = findViewById(R.id.iv_board_detail_more)
+                    mBoardDetailMore = findViewById(R.id.btn_board_detail_more)
                     if (mData != null) {
                         mBoardDetailMore.visibility = INVISIBLE
 

@@ -4,14 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBoardPage"
-    tools:context=".fragments.NoticeFragment">
+    tools:context=".fragments.BoardFragment">
 
     <ListView
         android:id="@+id/lv_boards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0px"
-        android:background="@color/colorBoardPage"
-        android:divider="@color/colorWhite"/>
+        android:dividerHeight="4dp"
+        android:background="@color/colorWhite"
+        android:divider="@color/colorBoardPage"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_board_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/colorPrimary"/>
 
 </FrameLayout>

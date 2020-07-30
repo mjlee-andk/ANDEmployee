@@ -61,10 +61,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_phone"
-        android:background="@drawable/roundedtextviewbackground"
         android:padding="10dp"
         android:layout_marginTop="5dp"
-        android:text="010-6376-2215"/>
+        android:text="010-6376-2215"
+        android:textColor="@color/colorBlack"/>
 
     <TextView
         android:id="@+id/tv_title_employee_extension_num"
@@ -81,10 +81,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_extension_num"
-        android:background="@drawable/roundedtextviewbackground"
         android:padding="10dp"
         android:layout_marginTop="5dp"
-        android:text="129"/>
+        android:text="129"
+        android:textColor="@color/colorBlack"/>
 
     <TextView
         android:id="@+id/tv_title_employee_birthdate"
@@ -101,10 +101,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_birthdate"
-        android:background="@drawable/roundedtextviewbackground"
         android:padding="10dp"
         android:layout_marginTop="5dp"
-        android:text="1990년 8월 30일"/>
+        android:text="8월 30일"
+        android:textColor="@color/colorBlack"/>
 
     <TextView
         android:id="@+id/tv_title_employee_joindate"
@@ -121,10 +121,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_joindate"
-        android:background="@drawable/roundedtextviewbackground"
         android:padding="10dp"
         android:layout_marginTop="5dp"
-        android:text="2020년 3월 23일"/>
+        android:text="2020년 3월 23일"
+        android:textColor="@color/colorBlack"/>
 
 
 

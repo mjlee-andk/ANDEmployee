@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:layout_marginTop="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -26,6 +25,7 @@
             android:id="@+id/tv_board_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="제목"
             android:textSize="23sp"
             android:textColor="@color/colorBlack"/>
@@ -34,6 +34,8 @@
             android:id="@+id/tv_board_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="3"
             android:text="내용"
             android:textSize="15sp"
             android:textColor="@color/colorBoardPreview"/>
@@ -42,6 +44,8 @@
             android:id="@+id/tv_board_writer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             android:text="작성자"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"/>
@@ -65,58 +69,81 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="7.5"
-            android:padding="15dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:padding="10dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/icon_eye"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/tv_board_click_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="2321"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_eye"/>
 
-            <ImageView
-                android:id="@+id/iv_board_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/icon_like"/>
+                <TextView
+                    android:id="@+id/tv_board_click_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="2321"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_board_like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="좋아요"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/icon_comment"/>
+                <ImageView
+                    android:id="@+id/iv_board_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_like"/>
 
-            <TextView
-                android:id="@+id/tv_board_comment_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="2"/>
+                <TextView
+                    android:id="@+id/tv_board_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="좋아요"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_comment"/>
+
+                <TextView
+                    android:id="@+id/tv_board_comment_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="2"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="2"
-            android:padding="15dp"
+            android:layout_weight="3"
+            android:padding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center">
 
             <TextView
@@ -127,26 +154,26 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/v_board_count_view_line"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorView"/>
+<!--        <View-->
+<!--            android:id="@+id/v_board_count_view_line"-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/colorView"/>-->
 
-        <LinearLayout
-            android:layout_weight="0.5"
-            android:padding="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+<!--        <LinearLayout-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center">-->
 
-            <ImageView
-                android:id="@+id/iv_board_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/icon_tag"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_board_tag"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/icon_tag"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 

@@ -41,10 +41,18 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
 //        val view : View
         val holder: ViewHolder
 
+        Prefs.Builder()
+            .setContext(context)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(context.packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
+
+        val mUserId = Prefs.getString(context.getString(R.string.PREF_USER_ID), null)
+
         if(convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.listview_board_comments, null)
-            holder =
-                ViewHolder()
+            holder = ViewHolder()
 
             holder.boardCommentsDivision = view.findViewById(R.id.tv_board_comments_division)
             holder.boardCommentsDepartment = view.findViewById(R.id.tv_board_comments_department)
@@ -54,7 +62,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             holder.boardCommentsLikeCount = view.findViewById(R.id.tv_board_comments_like_count)
             holder.boardCommentsLike = view.findViewById(R.id.iv_board_comments_like)
             holder.boardCommentsLikeContainer = view.findViewById(R.id.ll_board_comments_like_container)
-            holder.boardCommentsMore = view.findViewById(R.id.iv_board_comments_more)
+            holder.boardCommentsMore = view.findViewById(R.id.btn_board_comments_more)
 
             view.tag = holder
         } else {
@@ -81,14 +89,9 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         }
 
         holder.boardCommentsLikeContainer?.setOnClickListener {
-            Prefs.Builder()
-                .setContext(context)
-                .setMode(ContextWrapper.MODE_PRIVATE)
-                .setPrefsName(context.packageName)
-                .setUseDefaultSharedPreference(true)
-                .build()
 
-            val mUserId = Prefs.getString(context.getString(R.string.PREF_USER_ID), null)
+
+
 
             // 좋아요 취소
             if(holder.boardCommentsLike.tag == R.drawable.icon_like_selected) {
@@ -108,63 +111,68 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
             commentLike(comment.id, mUserId)
         }
 
-        // TODO mUserId 수정해야함, 수정하기 만들어야함
-        holder.boardCommentsMore.setOnClickListener {
-            val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
-            val items = arrayOf("수정하기", "삭제하기")
-            dialogBuilder.setItems(items) { _, which ->
-                when(which) {
-                    // 수정하기
-                    0 -> {
-                        val editCommentDialogBuilder = AlertDialog.Builder(context)
-                        val imm: InputMethodManager? = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                        val customLayout = LayoutInflater.from(context).inflate(R.layout.dialog_comment_edit, null)
-                        var commentEditText = customLayout.findViewById<EditText>(R.id.et_board_comment_edit)
+        holder.boardCommentsMore.visibility = View.INVISIBLE
+        if(comment.user_id == mUserId){
+            holder.boardCommentsMore.visibility = View.VISIBLE
 
-                        commentEditText.setText(comment.comment)
-                        commentEditText.setSelection(commentEditText.length())
-                        editCommentDialogBuilder.setView(customLayout)
-                        editCommentDialogBuilder.setPositiveButton(context.getString(R.string.update)) { _, _ ->
-                            var inputComment = commentEditText.text
-                            if(inputComment.isEmpty()) {
-                                Toast.makeText(context, context.getString(R.string.hint_contents), Toast.LENGTH_SHORT).show()
-                                return@setPositiveButton
+            holder.boardCommentsMore.setOnClickListener {
+                val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
+                val items = arrayOf("수정하기", "삭제하기")
+                dialogBuilder.setItems(items) { _, which ->
+                    when(which) {
+                        // 수정하기
+                        0 -> {
+                            val editCommentDialogBuilder = AlertDialog.Builder(context)
+                            val imm: InputMethodManager? = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                            val customLayout = LayoutInflater.from(context).inflate(R.layout.dialog_comment_edit, null)
+                            var commentEditText = customLayout.findViewById<EditText>(R.id.et_board_comment_edit)
+
+                            commentEditText.setText(comment.comment)
+                            commentEditText.setSelection(commentEditText.length())
+                            editCommentDialogBuilder.setView(customLayout)
+                            editCommentDialogBuilder.setTitle(context.getString(R.string.hint_comment))
+                            editCommentDialogBuilder.setPositiveButton(context.getString(R.string.update)) { _, _ ->
+                                var inputComment = commentEditText.text
+                                if(inputComment.isEmpty()) {
+                                    Toast.makeText(context, context.getString(R.string.hint_contents), Toast.LENGTH_SHORT).show()
+                                    return@setPositiveButton
+                                }
+
+                                updateComment(comment.id, inputComment.toString())
+                                // 키보드 숨기기
+                                imm?.toggleSoftInput(
+                                    InputMethodManager.HIDE_IMPLICIT_ONLY, 0
+                                )
                             }
+                            editCommentDialogBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
 
-                            updateComment(comment.id, inputComment.toString())
-                            // 키보드 숨기기
+                            }
+                            editCommentDialogBuilder.show()
+
+                            // 키보드 띄우기
                             imm?.toggleSoftInput(
-                                InputMethodManager.HIDE_IMPLICIT_ONLY, 0
+                                InputMethodManager.SHOW_FORCED,
+                                InputMethodManager.HIDE_IMPLICIT_ONLY
                             )
                         }
-                        editCommentDialogBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
+                        // 삭제하기
+                        1 -> {
+                            val deleteDialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
+                            deleteDialogBuilder.setMessage(context.getString(R.string.alert_delete))
+                            deleteDialogBuilder.setPositiveButton(context.getString(R.string.delete)) { _, _ ->
+                                deleteComment(comment.id)
+                            }
 
+                            deleteDialogBuilder.setNegativeButton(context.getString(R.string.keep)) { _, _ ->
+
+                            }
+                            deleteDialogBuilder.show()
                         }
-                        editCommentDialogBuilder.show()
-
-                        // 키보드 띄우기
-                        imm?.toggleSoftInput(
-                            InputMethodManager.SHOW_FORCED,
-                            InputMethodManager.HIDE_IMPLICIT_ONLY
-                        )
-                    }
-                    // 삭제하기
-                    1 -> {
-                        val deleteDialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context)
-                        deleteDialogBuilder.setMessage(context.getString(R.string.alert_delete))
-                        deleteDialogBuilder.setPositiveButton(context.getString(R.string.delete)) { _, _ ->
-                            deleteComment(comment.id)
-                        }
-
-                        deleteDialogBuilder.setNegativeButton(context.getString(R.string.keep)) { _, _ ->
-
-                        }
-                        deleteDialogBuilder.show()
                     }
                 }
-            }
 
-            dialogBuilder.show()
+                dialogBuilder.show()
+            }
         }
 
         return view
@@ -178,7 +186,7 @@ class BoardCommentAdapter(val context: Context, private val comments: ArrayList<
         var boardCommentsDate : TextView? = null
         var boardCommentsLikeCount : TextView? = null
         lateinit var boardCommentsLike : ImageView
-        lateinit var boardCommentsMore : ImageView
+        lateinit var boardCommentsMore : Button
 
         var boardCommentsLikeContainer : LinearLayout? = null
     }

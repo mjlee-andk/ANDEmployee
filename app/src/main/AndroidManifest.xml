@@ -15,6 +15,10 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
+            android:name=".ImageDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".BoardEditActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
