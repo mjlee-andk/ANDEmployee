@@ -108,6 +108,7 @@ class DepartmentsFragment : Fragment() {
                         val intent = Intent(activity, EmployeesActivity::class.java)
                         intent.putExtra(getString(R.string.DEPARTMENT_ID), selectedDepartment.id)
                         startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
 
                         return@setOnChildClickListener false
                     }

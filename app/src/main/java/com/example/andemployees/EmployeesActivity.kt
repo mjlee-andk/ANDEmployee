@@ -47,6 +47,11 @@ class EmployeesActivity : AppCompatActivity() {
         loadingDialog.dismiss()
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
+    }
+
     private fun getEmployees(search:String, divisionId:String, departmentId: String) {
         loadingDialog.show()
         api.getEmployees(search, divisionId, departmentId).enqueue(object: Callback<Result.ResultEmployees> {
@@ -104,6 +109,7 @@ class EmployeesActivity : AppCompatActivity() {
                         val intent = Intent(this@EmployeesActivity, EmployeeDetailActivity::class.java)
                         intent.putExtra(getString(R.string.EMPLOYEE_ID), selectedEmployee.id)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
                     }
                 }
             }

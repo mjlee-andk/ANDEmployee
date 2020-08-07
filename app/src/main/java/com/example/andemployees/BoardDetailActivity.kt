@@ -142,6 +142,10 @@ class BoardDetailActivity : AppCompatActivity() {
         loadingDialog.dismiss()
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
+    }
     private fun getBoardDetail (boardId: String, userId: String) {
         loadingDialog.show()
         api.getBoardDetail(boardId, userId).enqueue(object: Callback<Result.ResultBoard> {

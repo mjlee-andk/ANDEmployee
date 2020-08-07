@@ -110,6 +110,11 @@ class EmployeeDetailActivity : AppCompatActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
+    }
+
     private fun getEmployee(employeeId: String) {
         loadingDialog.show()
         api.getEmployee(employeeId).enqueue(object: Callback<Result.ResultEmployee> {

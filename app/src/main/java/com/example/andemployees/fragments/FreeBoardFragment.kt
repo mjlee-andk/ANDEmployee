@@ -115,6 +115,7 @@ class FreeBoardFragment : Fragment() {
                         val intent = Intent(activity, BoardDetailActivity::class.java)
                         intent.putExtra(getString(R.string.BOARD_ID), selectedBoard.id)
                         startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
                     }
                 }
             }
