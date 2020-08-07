@@ -60,7 +60,7 @@ class BoardAdapter(val context: Context, private val boards: ArrayList<Result.Ta
 
         holder.boardsCategory?.text = board.category_name
         holder.boardsTitle?.text = board.title
-        holder.boardsContent?.text = board.contents
+        holder.boardsContent?.text = board.contents.replace("\n", "")
         holder.boardsWriter?.text = board.user_name
         holder.boardsClickCount?.text = board.click_count.toString()
         holder.boardsLikeCount?.text = board.like_count.toString()
