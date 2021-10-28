@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
@@ -126,6 +127,52 @@
         android:text="2020년 3월 23일"
         android:textColor="@color/colorBlack"/>
 
+    <TextView
+        android:id="@+id/tv_title_employee_final_education"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_joindate"
+        android:layout_marginTop="15dp"
+        android:text="최종학력"/>
 
+    <TextView
+        android:id="@+id/tv_employee_final_education"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_final_education"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:text="대졸(4년제) 00대학교"
+        android:textColor="@color/colorBlack"/>
+
+    <TextView
+        android:id="@+id/tv_title_employee_annual_incomes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_final_education"
+        android:layout_marginTop="15dp"
+        android:text="연봉"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_employee_annual_incomes"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_employee_annual_incomes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:text="2021년 1000만원"
+            android:textColor="@color/colorBlack"/>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -135,7 +135,10 @@ class Result {
             var department_id: String = "",
             var department_name: String = "",
             var position_id: String = "",
-            var position_name: String = ""
+            var position_name: String = "",
+            var final_education: Int = 0,
+            var school_name: String = "",
+            var annual_incomes: String = ""
     )
 
     data class TableMemo(

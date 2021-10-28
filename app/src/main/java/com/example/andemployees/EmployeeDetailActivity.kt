@@ -10,6 +10,7 @@ import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -43,6 +44,9 @@ class EmployeeDetailActivity : AppCompatActivity() {
     lateinit var mEmployeeBirthdate: TextView
     lateinit var mEmployeeJoindate: TextView
     lateinit var mEmployeeProfile: ImageView
+    lateinit var mEmployeeFinalEducation: TextView
+    lateinit var mEmployeeAnnualIncomes: TextView
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +83,10 @@ class EmployeeDetailActivity : AppCompatActivity() {
         mEmployeePhoneNum = findViewById(R.id.tv_employee_phone_num)
         mEmployeeBirthdate = findViewById(R.id.tv_employee_birthdate)
         mEmployeeJoindate = findViewById(R.id.tv_employee_joindate)
+        mEmployeeFinalEducation = findViewById(R.id.tv_employee_final_education)
+        mEmployeeAnnualIncomes = findViewById(R.id.tv_employee_annual_incomes)
+
+        mEmployeeAnnualIncomes.movementMethod = ScrollingMovementMethod.getInstance()
 
         if (mEmployeeId != null) {
             getEmployee(mEmployeeId)
@@ -136,6 +144,35 @@ class EmployeeDetailActivity : AppCompatActivity() {
                     mEmployeePhoneNum.text = mData?.phone
                     mEmployeeBirthdate.text = mData?.birth
                     mEmployeeJoindate.text = mData?.join_date
+
+                    var finalEducationResult = "";
+                    if(mData?.school_name != null && mData?.school_name != "") {
+                        finalEducationResult += mData?.school_name;
+                    }
+
+                    if(mData?.final_education != null) {
+                        if(mData?.final_education == 0) {
+                            finalEducationResult = "고졸 $finalEducationResult";
+                        }
+                        else if(mData?.final_education == 1) {
+                            finalEducationResult = "대졸(전문대) $finalEducationResult";
+                        }
+                        else if(mData?.final_education == 2) {
+                            finalEducationResult = "대졸(4년제) $finalEducationResult";
+                        }
+                        else if(mData?.final_education == 3) {
+                            finalEducationResult = "석사졸업 $finalEducationResult";
+                        }
+                        else if(mData?.final_education == 4) {
+                            finalEducationResult = "박사졸업 $finalEducationResult";
+                        }
+                    }
+
+                    mEmployeeFinalEducation.text = finalEducationResult.trim();
+                    if(mData?.annual_incomes != null) {
+                        mEmployeeAnnualIncomes.setText(mData?.annual_incomes);
+                    }
+
 
                     mEmployeePhoneNum.setOnClickListener {
                         try {
