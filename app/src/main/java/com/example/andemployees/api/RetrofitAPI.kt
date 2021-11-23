@@ -195,7 +195,7 @@ public interface RetrofitAPI {
     : Call<Result.ResultBasic>
 
     companion object {
-        private const val BASE_URL = "http://121.126.225.132:3000"
+        private const val BASE_URL = "http://admin.andk.co.kr:3000"
 //        private const val CLIENT_ID = "네이버_개발자센터_아이디"
 //        private const val CLIENT_SECRET = "네이버_개발자센터_비밀번호"
 
